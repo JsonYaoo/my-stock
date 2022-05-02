@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.jsonyao.mystock.common.client.TushareClientProxy;
 import com.jsonyao.mystock.common.enums.TushareApiEnum;
 import com.jsonyao.mystock.common.util.CommonDateUtil;
+import com.jsonyao.mystock.common.util.CommonObjectUtil;
 import com.jsonyao.mystock.sync.stockbasic.entity.SyncStockBasic;
 import com.jsonyao.mystock.sync.stockbasic.mapper.SyncStockBasicMapper;
 import com.jsonyao.mystock.sync.stockbasic.service.StockBasicSyncService;
@@ -17,7 +18,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 沪深股票_基础数据_股票列表_120 业务实现层
@@ -60,39 +64,8 @@ public class StockBasicSyncServiceImpl implements StockBasicSyncService {
         deleteIfExists(entityList);
 
         // 按照size进行分批插入
-        batchInsertBySize(entityList, 1000);
-    }
+        CommonObjectUtil.batchInsertBySize(entityList, 1000, list -> syncStockBasicMapper.batchInsertSelective(list));
 
-    /** 按照size进行分批插入 */
-    private void batchInsertBySize(List<SyncStockBasic> entityList, int size) {
-        if(CollectionUtils.isEmpty(entityList)) {
-            return;
-        }
-
-        // 获取分批组数
-        int batchCount;
-        int remaining = entityList.size() % size;
-        if(remaining == 0) {
-            batchCount = entityList.size() / size;
-        } else {
-            batchCount = entityList.size() / size + 1;
-        }
-
-        // 分批插入
-        List<SyncStockBasic> syncStockBasics;
-        for (int i = 0; i < batchCount; i++) {
-            // 最后一批
-            if (i == batchCount - 1) {
-                syncStockBasics = entityList.subList(size * i, entityList.size());
-            }
-            // 非最后一批
-            else {
-                syncStockBasics = entityList.subList(size * i, size * i + size);
-            }
-
-            // 批量插入
-            syncStockBasicMapper.batchInsertSelective(syncStockBasics);
-        }
     }
 
     /** 删除旧的数据, 如果存在的话 */
@@ -139,8 +112,7 @@ public class StockBasicSyncServiceImpl implements StockBasicSyncService {
             entity.setListDate(CommonDateUtil.parseyyyyMMdd2Date(fields.getList_date()));
             entity.setDelistDate(CommonDateUtil.parseyyyyMMdd2Date(fields.getDelist_date()));
             entity.setIsHs(fields.getIs_hs());
-            entity.setCreationDate(new Date());
-            entity.setLastUpdateDate(new Date());
+            CommonObjectUtil.setValue4Create(entity);
         }
 
         return entityList;
