@@ -1,4 +1,4 @@
-package com.jsonyao.mystock.sync.base.entity;
+package com.jsonyao.mystock.sync.stockbasic.entity;
 
 import lombok.Data;
 
@@ -8,45 +8,51 @@ import javax.persistence.Table;
 import java.util.Date;
 
 /**
- * 股票基本信息表
+ * 沪深股票_基础数据_股票列表_120
  *
  * @author yaocs2
  * @since 20220502
  */
 @Data
-@Table(name = "sync_base")
-public class SyncBase {
+@Table(name = "sync_stock_basic")
+public class SyncStockBasic {
 
     /**
      * 主键ID
      */
     @Id
-    @Column(name = "BASE_ID")
-    private Long baseId;
+    @Column(name = "STOCK_BASIC_ID")
+    private Long stockBasicId;
 
     /**
-     * TS代码
+     * TS股票代码
      */
     @Column(name = "TS_CODE")
     private String tsCode;
 
     /**
-     * 市场类型
-     */
-    @Column(name = "MARKET")
-    private String market;
-
-    /**
      * 股票代码
      */
-    @Column(name = "STOCK_CODE")
-    private String stockCode;
+    @Column(name = "SYMBOL")
+    private String symbol;
 
     /**
      * 股票名称
      */
     @Column(name = "STOCK_NAME")
     private String stockName;
+
+    /**
+     * 地域
+     */
+    @Column(name = "AREA")
+    private String area;
+
+    /**
+     * 所属行业
+     */
+    @Column(name = "INDUSTRY")
+    private String industry;
 
     /**
      * 股票全称
@@ -67,19 +73,25 @@ public class SyncBase {
     private String cnSpell;
 
     /**
-     * 所属行业
+     * 市场类型（主板/创业板/科创板/CDR）
      */
-    @Column(name = "INDUSTRY")
-    private String industry;
+    @Column(name = "MARKET")
+    private String market;
 
     /**
-     * 地域
+     * 交易所代码
      */
-    @Column(name = "AREA")
-    private String area;
+    @Column(name = "STOCK_EXCHANGE")
+    private String stockExchange;
 
     /**
-     * 上市状态(L上市 D退市 P暂停上市)
+     * 交易货币
+     */
+    @Column(name = "CURR_TYPE")
+    private String currType;
+
+    /**
+     * 上市状态 L上市 D退市 P暂停上市
      */
     @Column(name = "LIST_STATUS")
     private String listStatus;
@@ -95,6 +107,12 @@ public class SyncBase {
      */
     @Column(name = "DELIST_DATE")
     private Date delistDate;
+
+    /**
+     * 是否沪深港通标的，N否 H沪股通 S深股通
+     */
+    @Column(name = "IS_HS")
+    private String isHs;
 
     /**
      * 创建时间

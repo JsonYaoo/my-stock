@@ -4,7 +4,7 @@ spring:
   datasource:
     username: root
     password: root
-    url: jdbc:mysql://localhost:3306/my_stock?characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false
+    url: jdbc:mysql://localhost:3306/my_stock?characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false&allowMultiQueries=true
     driver-class-name: com.mysql.cj.jdbc.Driver
     druid:
       test-on-borrow: true
@@ -18,7 +18,7 @@ spring:
       remove-abandoned-timeout: 7200 #设置druid 强制回收连接的时限，当程序从池中get到连接开始算起，超过此  应大于业务运行最长时间值后，druid将强制回收该连接，单位秒
       test-while-idle: true #当程序请求连接，池在分配连接时，是否先检查该连接是否有效
       validation-query: select 1 #检查池中的连接是否仍可用的 SQL 语句,drui会连接到数据库执行该SQL mysql:select 1,oracle:select 1 from dual
-      filters: stat,wall
+      filters: stat
 server:
   port: 8080
   servlet:

@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsonyao.mystock.sync.stockbasic.mapper.SyncStockBasicMapper">
+
+  <resultMap id="BaseResultMap" type="com.jsonyao.mystock.sync.stockbasic.entity.SyncStockBasic">
+    <id column="STOCK_BASIC_ID" jdbcType="BIGINT" property="stockBasicId" />
+    <result column="TS_CODE" jdbcType="VARCHAR" property="tsCode" />
+    <result column="SYMBOL" jdbcType="VARCHAR" property="symbol" />
+    <result column="STOCK_NAME" jdbcType="VARCHAR" property="stockName" />
+    <result column="AREA" jdbcType="VARCHAR" property="area" />
+    <result column="INDUSTRY" jdbcType="VARCHAR" property="industry" />
+    <result column="FULL_NAME" jdbcType="VARCHAR" property="fullName" />
+    <result column="EN_NAME" jdbcType="VARCHAR" property="enName" />
+    <result column="CN_SPELL" jdbcType="VARCHAR" property="cnSpell" />
+    <result column="MARKET" jdbcType="VARCHAR" property="market" />
+    <result column="STOCK_EXCHANGE" jdbcType="VARCHAR" property="stockExchange" />
+    <result column="CURR_TYPE" jdbcType="VARCHAR" property="currType" />
+    <result column="LIST_STATUS" jdbcType="VARCHAR" property="listStatus" />
+    <result column="LIST_DATE" jdbcType="DATE" property="listDate" />
+    <result column="DELIST_DATE" jdbcType="DATE" property="delistDate" />
+    <result column="IS_HS" jdbcType="VARCHAR" property="isHs" />
+    <result column="CREATION_DATE" jdbcType="TIMESTAMP" property="creationDate" />
+    <result column="LAST_UPDATE_DATE" jdbcType="TIMESTAMP" property="lastUpdateDate" />
+    <result column="DELETE_FLAG" jdbcType="TINYINT" property="deleteFlag" />
+    <result column="VERSION" jdbcType="BIGINT" property="version" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    STOCK_BASIC_ID, TS_CODE, SYMBOL, STOCK_NAME, AREA, INDUSTRY, FULL_NAME, EN_NAME, 
+    CN_SPELL, MARKET, STOCK_EXCHANGE, CURR_TYPE, LIST_STATUS, LIST_DATE, DELIST_DATE, 
+    IS_HS, CREATION_DATE, LAST_UPDATE_DATE, DELETE_FLAG, VERSION
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sync_stock_basic
+    where STOCK_BASIC_ID = #{stockBasicId,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sync_stock_basic
+    where STOCK_BASIC_ID = #{stockBasicId,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="batchDeleteByCode" parameterType="java.util.List">
+    delete from sync_stock_basic
+    where TS_CODE IN
+    <foreach collection="list" item="item" separator="," open="(" close=")">
+       #{item}
+    </foreach>
+  </delete>
+
+  <insert id="insert" keyColumn="STOCK_BASIC_ID" keyProperty="stockBasicId" parameterType="com.jsonyao.mystock.sync.stockbasic.entity.SyncStockBasic" useGeneratedKeys="true">
+    insert into sync_stock_basic (TS_CODE, SYMBOL, STOCK_NAME, 
+      AREA, INDUSTRY, FULL_NAME, 
+      EN_NAME, CN_SPELL, MARKET, 
+      STOCK_EXCHANGE, CURR_TYPE, LIST_STATUS, 
+      LIST_DATE, DELIST_DATE, IS_HS, 
+      CREATION_DATE, LAST_UPDATE_DATE, DELETE_FLAG, 
+      VERSION)
+    values (#{tsCode,jdbcType=VARCHAR}, #{symbol,jdbcType=VARCHAR}, #{stockName,jdbcType=VARCHAR}, 
+      #{area,jdbcType=VARCHAR}, #{industry,jdbcType=VARCHAR}, #{fullName,jdbcType=VARCHAR}, 
+      #{enName,jdbcType=VARCHAR}, #{cnSpell,jdbcType=VARCHAR}, #{market,jdbcType=VARCHAR}, 
+      #{stockExchange,jdbcType=VARCHAR}, #{currType,jdbcType=VARCHAR}, #{listStatus,jdbcType=VARCHAR}, 
+      #{listDate,jdbcType=DATE}, #{delistDate,jdbcType=DATE}, #{isHs,jdbcType=VARCHAR}, 
+      #{creationDate,jdbcType=TIMESTAMP}, #{lastUpdateDate,jdbcType=TIMESTAMP}, #{deleteFlag,jdbcType=TINYINT}, 
+      #{version,jdbcType=BIGINT})
+  </insert>
+
+  <insert id="insertSelective" keyColumn="STOCK_BASIC_ID" keyProperty="stockBasicId" parameterType="com.jsonyao.mystock.sync.stockbasic.entity.SyncStockBasic" useGeneratedKeys="true">
+    insert into sync_stock_basic
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tsCode != null">
+        TS_CODE,
+      </if>
+      <if test="symbol != null">
+        SYMBOL,
+      </if>
+      <if test="stockName != null">
+        STOCK_NAME,
+      </if>
+      <if test="area != null">
+        AREA,
+      </if>
+      <if test="industry != null">
+        INDUSTRY,
+      </if>
+      <if test="fullName != null">
+        FULL_NAME,
+      </if>
+      <if test="enName != null">
+        EN_NAME,
+      </if>
+      <if test="cnSpell != null">
+        CN_SPELL,
+      </if>
+      <if test="market != null">
+        MARKET,
+      </if>
+      <if test="stockExchange != null">
+        STOCK_EXCHANGE,
+      </if>
+      <if test="currType != null">
+        CURR_TYPE,
+      </if>
+      <if test="listStatus != null">
+        LIST_STATUS,
+      </if>
+      <if test="listDate != null">
+        LIST_DATE,
+      </if>
+      <if test="delistDate != null">
+        DELIST_DATE,
+      </if>
+      <if test="isHs != null">
+        IS_HS,
+      </if>
+      <if test="creationDate != null">
+        CREATION_DATE,
+      </if>
+      <if test="lastUpdateDate != null">
+        LAST_UPDATE_DATE,
+      </if>
+      <if test="deleteFlag != null">
+        DELETE_FLAG,
+      </if>
+      <if test="version != null">
+        VERSION,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tsCode != null">
+        #{tsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="symbol != null">
+        #{symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="stockName != null">
+        #{stockName,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null">
+        #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="industry != null">
+        #{industry,jdbcType=VARCHAR},
+      </if>
+      <if test="fullName != null">
+        #{fullName,jdbcType=VARCHAR},
+      </if>
+      <if test="enName != null">
+        #{enName,jdbcType=VARCHAR},
+      </if>
+      <if test="cnSpell != null">
+        #{cnSpell,jdbcType=VARCHAR},
+      </if>
+      <if test="market != null">
+        #{market,jdbcType=VARCHAR},
+      </if>
+      <if test="stockExchange != null">
+        #{stockExchange,jdbcType=VARCHAR},
+      </if>
+      <if test="currType != null">
+        #{currType,jdbcType=VARCHAR},
+      </if>
+      <if test="listStatus != null">
+        #{listStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="listDate != null">
+        #{listDate,jdbcType=DATE},
+      </if>
+      <if test="delistDate != null">
+        #{delistDate,jdbcType=DATE},
+      </if>
+      <if test="isHs != null">
+        #{isHs,jdbcType=VARCHAR},
+      </if>
+      <if test="creationDate != null">
+        #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateDate != null">
+        #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteFlag != null">
+        #{deleteFlag,jdbcType=TINYINT},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+  <insert id="batchInsertSelective" parameterType="java.util.List">
+    <foreach collection="list" item="item" index="index"  separator=";">
+      insert into sync_stock_basic
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="item.tsCode != null">
+          TS_CODE,
+        </if>
+        <if test="item.symbol != null">
+          SYMBOL,
+        </if>
+        <if test="item.stockName != null">
+          STOCK_NAME,
+        </if>
+        <if test="item.area != null">
+          AREA,
+        </if>
+        <if test="item.industry != null">
+          INDUSTRY,
+        </if>
+        <if test="item.fullName != null">
+          FULL_NAME,
+        </if>
+        <if test="item.enName != null">
+          EN_NAME,
+        </if>
+        <if test="item.cnSpell != null">
+          CN_SPELL,
+        </if>
+        <if test="item.market != null">
+          MARKET,
+        </if>
+        <if test="item.stockExchange != null">
+          STOCK_EXCHANGE,
+        </if>
+        <if test="item.currType != null">
+          CURR_TYPE,
+        </if>
+        <if test="item.listStatus != null">
+          LIST_STATUS,
+        </if>
+        <if test="item.listDate != null">
+          LIST_DATE,
+        </if>
+        <if test="item.delistDate != null">
+          DELIST_DATE,
+        </if>
+        <if test="item.isHs != null">
+          IS_HS,
+        </if>
+        <if test="item.creationDate != null">
+          CREATION_DATE,
+        </if>
+        <if test="item.lastUpdateDate != null">
+          LAST_UPDATE_DATE,
+        </if>
+        <if test="item.deleteFlag != null">
+          DELETE_FLAG,
+        </if>
+        <if test="item.version != null">
+          VERSION,
+        </if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="item.tsCode != null">
+          #{item.tsCode,jdbcType=VARCHAR},
+        </if>
+        <if test="item.symbol != null">
+          #{item.symbol,jdbcType=VARCHAR},
+        </if>
+        <if test="item.stockName != null">
+          #{item.stockName,jdbcType=VARCHAR},
+        </if>
+        <if test="item.area != null">
+          #{item.area,jdbcType=VARCHAR},
+        </if>
+        <if test="item.industry != null">
+          #{item.industry,jdbcType=VARCHAR},
+        </if>
+        <if test="item.fullName != null">
+          #{item.fullName,jdbcType=VARCHAR},
+        </if>
+        <if test="item.enName != null">
+          #{item.enName,jdbcType=VARCHAR},
+        </if>
+        <if test="item.cnSpell != null">
+          #{item.cnSpell,jdbcType=VARCHAR},
+        </if>
+        <if test="item.market != null">
+          #{item.market,jdbcType=VARCHAR},
+        </if>
+        <if test="item.stockExchange != null">
+          #{item.stockExchange,jdbcType=VARCHAR},
+        </if>
+        <if test="item.currType != null">
+          #{item.currType,jdbcType=VARCHAR},
+        </if>
+        <if test="item.listStatus != null">
+          #{item.listStatus,jdbcType=VARCHAR},
+        </if>
+        <if test="item.listDate != null">
+          #{item.listDate,jdbcType=DATE},
+        </if>
+        <if test="item.delistDate != null">
+          #{item.delistDate,jdbcType=DATE},
+        </if>
+        <if test="item.isHs != null">
+          #{item.isHs,jdbcType=VARCHAR},
+        </if>
+        <if test="item.creationDate != null">
+          #{item.creationDate,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.lastUpdateDate != null">
+          #{item.lastUpdateDate,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.deleteFlag != null">
+          #{item.deleteFlag,jdbcType=TINYINT},
+        </if>
+        <if test="item.version != null">
+          #{item.version,jdbcType=BIGINT},
+        </if>
+      </trim>
+    </foreach>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.jsonyao.mystock.sync.stockbasic.entity.SyncStockBasic">
+    update sync_stock_basic
+    <set>
+      <if test="tsCode != null">
+        TS_CODE = #{tsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="symbol != null">
+        SYMBOL = #{symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="stockName != null">
+        STOCK_NAME = #{stockName,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null">
+        AREA = #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="industry != null">
+        INDUSTRY = #{industry,jdbcType=VARCHAR},
+      </if>
+      <if test="fullName != null">
+        FULL_NAME = #{fullName,jdbcType=VARCHAR},
+      </if>
+      <if test="enName != null">
+        EN_NAME = #{enName,jdbcType=VARCHAR},
+      </if>
+      <if test="cnSpell != null">
+        CN_SPELL = #{cnSpell,jdbcType=VARCHAR},
+      </if>
+      <if test="market != null">
+        MARKET = #{market,jdbcType=VARCHAR},
+      </if>
+      <if test="stockExchange != null">
+        STOCK_EXCHANGE = #{stockExchange,jdbcType=VARCHAR},
+      </if>
+      <if test="currType != null">
+        CURR_TYPE = #{currType,jdbcType=VARCHAR},
+      </if>
+      <if test="listStatus != null">
+        LIST_STATUS = #{listStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="listDate != null">
+        LIST_DATE = #{listDate,jdbcType=DATE},
+      </if>
+      <if test="delistDate != null">
+        DELIST_DATE = #{delistDate,jdbcType=DATE},
+      </if>
+      <if test="isHs != null">
+        IS_HS = #{isHs,jdbcType=VARCHAR},
+      </if>
+      <if test="creationDate != null">
+        CREATION_DATE = #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateDate != null">
+        LAST_UPDATE_DATE = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteFlag != null">
+        DELETE_FLAG = #{deleteFlag,jdbcType=TINYINT},
+      </if>
+      <if test="version != null">
+        VERSION = #{version,jdbcType=BIGINT},
+      </if>
+    </set>
+    where STOCK_BASIC_ID = #{stockBasicId,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.jsonyao.mystock.sync.stockbasic.entity.SyncStockBasic">
+    update sync_stock_basic
+    set TS_CODE = #{tsCode,jdbcType=VARCHAR},
+      SYMBOL = #{symbol,jdbcType=VARCHAR},
+      STOCK_NAME = #{stockName,jdbcType=VARCHAR},
+      AREA = #{area,jdbcType=VARCHAR},
+      INDUSTRY = #{industry,jdbcType=VARCHAR},
+      FULL_NAME = #{fullName,jdbcType=VARCHAR},
+      EN_NAME = #{enName,jdbcType=VARCHAR},
+      CN_SPELL = #{cnSpell,jdbcType=VARCHAR},
+      MARKET = #{market,jdbcType=VARCHAR},
+      STOCK_EXCHANGE = #{stockExchange,jdbcType=VARCHAR},
+      CURR_TYPE = #{currType,jdbcType=VARCHAR},
+      LIST_STATUS = #{listStatus,jdbcType=VARCHAR},
+      LIST_DATE = #{listDate,jdbcType=DATE},
+      DELIST_DATE = #{delistDate,jdbcType=DATE},
+      IS_HS = #{isHs,jdbcType=VARCHAR},
+      CREATION_DATE = #{creationDate,jdbcType=TIMESTAMP},
+      LAST_UPDATE_DATE = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      DELETE_FLAG = #{deleteFlag,jdbcType=TINYINT},
+      VERSION = #{version,jdbcType=BIGINT}
+    where STOCK_BASIC_ID = #{stockBasicId,jdbcType=BIGINT}
+  </update>
+  
+</mapper>
