@@ -1,0 +1,14 @@
+package com.jsonyao.mystock.sync;
+
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+@MapperScan(basePackages = { "com.jsonyao.mystock.**.mapper" })
+public class SyncApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(SyncApplication.class, args);
+    }
+}

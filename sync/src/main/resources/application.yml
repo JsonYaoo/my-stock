@@ -1,0 +1,29 @@
+spring:
+  profiles:
+    active: dev
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://localhost:3306/my_stock?characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    druid:
+      test-on-borrow: true
+      min-evictable-idle-time-millis: 1800000
+      initial-size: 0
+      min-idle: 0 #回收空闲连接时，将保证至少有minIdle个连接
+      max-active: 100
+      max-wait: 10000 #程序向连接池中请求连接时,超过maxWait的值后，认为本次请求失败
+      time-between-eviction-runs-millis: 60000 #检查空闲连接的频率，单位毫秒
+      remove-abandoned: true #要求程序从池中get到连接后, N 秒后必须close,否则druid 会强制回收
+      remove-abandoned-timeout: 7200 #设置druid 强制回收连接的时限，当程序从池中get到连接开始算起，超过此  应大于业务运行最长时间值后，druid将强制回收该连接，单位秒
+      test-while-idle: true #当程序请求连接，池在分配连接时，是否先检查该连接是否有效
+      validation-query: select 1 #检查池中的连接是否仍可用的 SQL 语句,drui会连接到数据库执行该SQL mysql:select 1,oracle:select 1 from dual
+      filters: stat,wall
+server:
+  port: 8080
+  servlet:
+    context-path: /mystock
+
+mybatis:
+  mapper-locations: classpath:com/jsonyao/mystock/**/mapper/**.xml
+  config-location: classpath:/mybatis-config.xml
