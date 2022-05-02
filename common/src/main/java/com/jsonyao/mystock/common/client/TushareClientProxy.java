@@ -70,7 +70,7 @@ public class TushareClientProxy {
         }
         // 通用TuShare请求查询: 全参数版
         else {
-            response = tushareClient.doQuery(apiEnum.getValue(), token, JSONObject.toJSONString(params), fields.getFieldsJoinedStr());
+            response = tushareClient.doQuery(apiEnum.getValue(), token, params, fields.getFieldsJoinedStr());
         }
 
         // 解析增强式TuShare请求结果

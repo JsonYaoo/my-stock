@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsonyao.mystock.sync.stockcompany.mapper.SyncStockCompanyMapper">
+
+  <resultMap id="BaseResultMap" type="com.jsonyao.mystock.sync.stockcompany.entity.SyncStockCompany">
+    <id column="COMPANY_ID" jdbcType="BIGINT" property="companyId" />
+    <result column="TS_CODE" jdbcType="VARCHAR" property="tsCode" />
+    <result column="EXCHANGE" jdbcType="VARCHAR" property="exchange" />
+    <result column="CHAIR_MAN" jdbcType="VARCHAR" property="chairMan" />
+    <result column="MANAGER" jdbcType="VARCHAR" property="manager" />
+    <result column="SECRETARY" jdbcType="VARCHAR" property="secretary" />
+    <result column="REG_CAPITAL" jdbcType="DOUBLE" property="regCapital" />
+    <result column="SETUP_DATE" jdbcType="DATE" property="setupDate" />
+    <result column="PROVINCE" jdbcType="VARCHAR" property="province" />
+    <result column="CITY" jdbcType="VARCHAR" property="city" />
+    <result column="INTRODUCTION" jdbcType="VARCHAR" property="introduction" />
+    <result column="WEBSITE" jdbcType="VARCHAR" property="website" />
+    <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+    <result column="OFFICE" jdbcType="VARCHAR" property="office" />
+    <result column="EMPLOYEES" jdbcType="TINYINT" property="employees" />
+    <result column="MAIN_BUSINESS" jdbcType="VARCHAR" property="mainBusiness" />
+    <result column="BUSINESS_SCOPE" jdbcType="VARCHAR" property="businessScope" />
+    <result column="CREATION_DATE" jdbcType="TIMESTAMP" property="creationDate" />
+    <result column="LAST_UPDATE_DATE" jdbcType="TIMESTAMP" property="lastUpdateDate" />
+    <result column="DELETE_FLAG" jdbcType="TINYINT" property="deleteFlag" />
+    <result column="VERSION" jdbcType="BIGINT" property="version" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    COMPANY_ID, TS_CODE, EXCHANGE, CHAIR_MAN, MANAGER, SECRETARY, REG_CAPITAL, SETUP_DATE, 
+    PROVINCE, CITY, INTRODUCTION, WEBSITE, EMAIL, OFFICE, EMPLOYEES, MAIN_BUSINESS, BUSINESS_SCOPE, 
+    CREATION_DATE, LAST_UPDATE_DATE, DELETE_FLAG, VERSION
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sync_stock_company
+    where COMPANY_ID = #{companyId,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sync_stock_company
+    where COMPANY_ID = #{companyId,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="batchDeleteByCode" parameterType="java.util.List">
+    delete from sync_stock_company
+    where TS_CODE IN
+    <foreach collection="list" item="item" separator="," open="(" close=")">
+      #{item}
+    </foreach>
+  </delete>
+
+  <insert id="insert" keyColumn="COMPANY_ID" keyProperty="companyId" parameterType="com.jsonyao.mystock.sync.stockcompany.entity.SyncStockCompany" useGeneratedKeys="true">
+    insert into sync_stock_company (TS_CODE, EXCHANGE, CHAIR_MAN, 
+      MANAGER, SECRETARY, REG_CAPITAL, 
+      SETUP_DATE, PROVINCE, CITY, 
+      INTRODUCTION, WEBSITE, EMAIL, 
+      OFFICE, EMPLOYEES, MAIN_BUSINESS, 
+      BUSINESS_SCOPE, CREATION_DATE, LAST_UPDATE_DATE, 
+      DELETE_FLAG, VERSION)
+    values (#{tsCode,jdbcType=VARCHAR}, #{exchange,jdbcType=VARCHAR}, #{chairMan,jdbcType=VARCHAR}, 
+      #{manager,jdbcType=VARCHAR}, #{secretary,jdbcType=VARCHAR}, #{regCapital,jdbcType=DOUBLE}, 
+      #{setupDate,jdbcType=DATE}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
+      #{introduction,jdbcType=VARCHAR}, #{website,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{office,jdbcType=VARCHAR}, #{employees,jdbcType=TINYINT}, #{mainBusiness,jdbcType=VARCHAR}, 
+      #{businessScope,jdbcType=VARCHAR}, #{creationDate,jdbcType=TIMESTAMP}, #{lastUpdateDate,jdbcType=TIMESTAMP}, 
+      #{deleteFlag,jdbcType=TINYINT}, #{version,jdbcType=BIGINT})
+  </insert>
+
+  <insert id="insertSelective" keyColumn="COMPANY_ID" keyProperty="companyId" parameterType="com.jsonyao.mystock.sync.stockcompany.entity.SyncStockCompany" useGeneratedKeys="true">
+    insert into sync_stock_company
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tsCode != null">
+        TS_CODE,
+      </if>
+      <if test="exchange != null">
+        EXCHANGE,
+      </if>
+      <if test="chairMan != null">
+        CHAIR_MAN,
+      </if>
+      <if test="manager != null">
+        MANAGER,
+      </if>
+      <if test="secretary != null">
+        SECRETARY,
+      </if>
+      <if test="regCapital != null">
+        REG_CAPITAL,
+      </if>
+      <if test="setupDate != null">
+        SETUP_DATE,
+      </if>
+      <if test="province != null">
+        PROVINCE,
+      </if>
+      <if test="city != null">
+        CITY,
+      </if>
+      <if test="introduction != null">
+        INTRODUCTION,
+      </if>
+      <if test="website != null">
+        WEBSITE,
+      </if>
+      <if test="email != null">
+        EMAIL,
+      </if>
+      <if test="office != null">
+        OFFICE,
+      </if>
+      <if test="employees != null">
+        EMPLOYEES,
+      </if>
+      <if test="mainBusiness != null">
+        MAIN_BUSINESS,
+      </if>
+      <if test="businessScope != null">
+        BUSINESS_SCOPE,
+      </if>
+      <if test="creationDate != null">
+        CREATION_DATE,
+      </if>
+      <if test="lastUpdateDate != null">
+        LAST_UPDATE_DATE,
+      </if>
+      <if test="deleteFlag != null">
+        DELETE_FLAG,
+      </if>
+      <if test="version != null">
+        VERSION,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tsCode != null">
+        #{tsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="exchange != null">
+        #{exchange,jdbcType=VARCHAR},
+      </if>
+      <if test="chairMan != null">
+        #{chairMan,jdbcType=VARCHAR},
+      </if>
+      <if test="manager != null">
+        #{manager,jdbcType=VARCHAR},
+      </if>
+      <if test="secretary != null">
+        #{secretary,jdbcType=VARCHAR},
+      </if>
+      <if test="regCapital != null">
+        #{regCapital,jdbcType=DOUBLE},
+      </if>
+      <if test="setupDate != null">
+        #{setupDate,jdbcType=DATE},
+      </if>
+      <if test="province != null">
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="introduction != null">
+        #{introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="website != null">
+        #{website,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="office != null">
+        #{office,jdbcType=VARCHAR},
+      </if>
+      <if test="employees != null">
+        #{employees,jdbcType=TINYINT},
+      </if>
+      <if test="mainBusiness != null">
+        #{mainBusiness,jdbcType=VARCHAR},
+      </if>
+      <if test="businessScope != null">
+        #{businessScope,jdbcType=VARCHAR},
+      </if>
+      <if test="creationDate != null">
+        #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateDate != null">
+        #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteFlag != null">
+        #{deleteFlag,jdbcType=TINYINT},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+  <insert id="batchInsertSelective" parameterType="java.util.List">
+    <foreach collection="list" item="item" index="index"  separator=";">
+      insert into sync_stock_company
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="item.tsCode != null">
+          TS_CODE,
+        </if>
+        <if test="item.exchange != null">
+          EXCHANGE,
+        </if>
+        <if test="item.chairMan != null">
+          CHAIR_MAN,
+        </if>
+        <if test="item.manager != null">
+          MANAGER,
+        </if>
+        <if test="item.secretary != null">
+          SECRETARY,
+        </if>
+        <if test="item.regCapital != null">
+          REG_CAPITAL,
+        </if>
+        <if test="item.setupDate != null">
+          SETUP_DATE,
+        </if>
+        <if test="item.province != null">
+          PROVINCE,
+        </if>
+        <if test="item.city != null">
+          CITY,
+        </if>
+        <if test="item.introduction != null">
+          INTRODUCTION,
+        </if>
+        <if test="item.website != null">
+          WEBSITE,
+        </if>
+        <if test="item.email != null">
+          EMAIL,
+        </if>
+        <if test="item.office != null">
+          OFFICE,
+        </if>
+        <if test="item.employees != null">
+          EMPLOYEES,
+        </if>
+        <if test="item.mainBusiness != null">
+          MAIN_BUSINESS,
+        </if>
+        <if test="item.businessScope != null">
+          BUSINESS_SCOPE,
+        </if>
+        <if test="item.creationDate != null">
+          CREATION_DATE,
+        </if>
+        <if test="item.lastUpdateDate != null">
+          LAST_UPDATE_DATE,
+        </if>
+        <if test="item.deleteFlag != null">
+          DELETE_FLAG,
+        </if>
+        <if test="item.version != null">
+          VERSION,
+        </if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="item.tsCode != null">
+          #{item.tsCode,jdbcType=VARCHAR},
+        </if>
+        <if test="item.exchange != null">
+          #{item.exchange,jdbcType=VARCHAR},
+        </if>
+        <if test="item.chairMan != null">
+          #{item.chairMan,jdbcType=VARCHAR},
+        </if>
+        <if test="item.manager != null">
+          #{item.manager,jdbcType=VARCHAR},
+        </if>
+        <if test="item.secretary != null">
+          #{item.secretary,jdbcType=VARCHAR},
+        </if>
+        <if test="item.regCapital != null">
+          #{item.regCapital,jdbcType=DOUBLE},
+        </if>
+        <if test="item.setupDate != null">
+          #{item.setupDate,jdbcType=DATE},
+        </if>
+        <if test="item.province != null">
+          #{item.province,jdbcType=VARCHAR},
+        </if>
+        <if test="item.city != null">
+          #{item.city,jdbcType=VARCHAR},
+        </if>
+        <if test="item.introduction != null">
+          #{item.introduction,jdbcType=VARCHAR},
+        </if>
+        <if test="item.website != null">
+          #{item.website,jdbcType=VARCHAR},
+        </if>
+        <if test="item.email != null">
+          #{item.email,jdbcType=VARCHAR},
+        </if>
+        <if test="item.office != null">
+          #{item.office,jdbcType=VARCHAR},
+        </if>
+        <if test="item.employees != null">
+          #{item.employees,jdbcType=TINYINT},
+        </if>
+        <if test="item.mainBusiness != null">
+          #{item.mainBusiness,jdbcType=VARCHAR},
+        </if>
+        <if test="item.businessScope != null">
+          #{item.businessScope,jdbcType=VARCHAR},
+        </if>
+        <if test="item.creationDate != null">
+          #{item.creationDate,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.lastUpdateDate != null">
+          #{item.lastUpdateDate,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.deleteFlag != null">
+          #{item.deleteFlag,jdbcType=TINYINT},
+        </if>
+        <if test="item.version != null">
+          #{item.version,jdbcType=BIGINT},
+        </if>
+      </trim>
+    </foreach>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.jsonyao.mystock.sync.stockcompany.entity.SyncStockCompany">
+    update sync_stock_company
+    <set>
+      <if test="tsCode != null">
+        TS_CODE = #{tsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="exchange != null">
+        EXCHANGE = #{exchange,jdbcType=VARCHAR},
+      </if>
+      <if test="chairMan != null">
+        CHAIR_MAN = #{chairMan,jdbcType=VARCHAR},
+      </if>
+      <if test="manager != null">
+        MANAGER = #{manager,jdbcType=VARCHAR},
+      </if>
+      <if test="secretary != null">
+        SECRETARY = #{secretary,jdbcType=VARCHAR},
+      </if>
+      <if test="regCapital != null">
+        REG_CAPITAL = #{regCapital,jdbcType=DOUBLE},
+      </if>
+      <if test="setupDate != null">
+        SETUP_DATE = #{setupDate,jdbcType=DATE},
+      </if>
+      <if test="province != null">
+        PROVINCE = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        CITY = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="introduction != null">
+        INTRODUCTION = #{introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="website != null">
+        WEBSITE = #{website,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        EMAIL = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="office != null">
+        OFFICE = #{office,jdbcType=VARCHAR},
+      </if>
+      <if test="employees != null">
+        EMPLOYEES = #{employees,jdbcType=TINYINT},
+      </if>
+      <if test="mainBusiness != null">
+        MAIN_BUSINESS = #{mainBusiness,jdbcType=VARCHAR},
+      </if>
+      <if test="businessScope != null">
+        BUSINESS_SCOPE = #{businessScope,jdbcType=VARCHAR},
+      </if>
+      <if test="creationDate != null">
+        CREATION_DATE = #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateDate != null">
+        LAST_UPDATE_DATE = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteFlag != null">
+        DELETE_FLAG = #{deleteFlag,jdbcType=TINYINT},
+      </if>
+      <if test="version != null">
+        VERSION = #{version,jdbcType=BIGINT},
+      </if>
+    </set>
+    where COMPANY_ID = #{companyId,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.jsonyao.mystock.sync.stockcompany.entity.SyncStockCompany">
+    update sync_stock_company
+    set TS_CODE = #{tsCode,jdbcType=VARCHAR},
+      EXCHANGE = #{exchange,jdbcType=VARCHAR},
+      CHAIR_MAN = #{chairMan,jdbcType=VARCHAR},
+      MANAGER = #{manager,jdbcType=VARCHAR},
+      SECRETARY = #{secretary,jdbcType=VARCHAR},
+      REG_CAPITAL = #{regCapital,jdbcType=DOUBLE},
+      SETUP_DATE = #{setupDate,jdbcType=DATE},
+      PROVINCE = #{province,jdbcType=VARCHAR},
+      CITY = #{city,jdbcType=VARCHAR},
+      INTRODUCTION = #{introduction,jdbcType=VARCHAR},
+      WEBSITE = #{website,jdbcType=VARCHAR},
+      EMAIL = #{email,jdbcType=VARCHAR},
+      OFFICE = #{office,jdbcType=VARCHAR},
+      EMPLOYEES = #{employees,jdbcType=TINYINT},
+      MAIN_BUSINESS = #{mainBusiness,jdbcType=VARCHAR},
+      BUSINESS_SCOPE = #{businessScope,jdbcType=VARCHAR},
+      CREATION_DATE = #{creationDate,jdbcType=TIMESTAMP},
+      LAST_UPDATE_DATE = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      DELETE_FLAG = #{deleteFlag,jdbcType=TINYINT},
+      VERSION = #{version,jdbcType=BIGINT}
+    where COMPANY_ID = #{companyId,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -25,6 +25,8 @@ public interface SyncStockBasicMapper {
 
     SyncStockBasic selectByPrimaryKey(Long stockBasicId);
 
+    List<SyncStockBasic> selectAll();
+
     int updateByPrimaryKeySelective(SyncStockBasic record);
 
     int updateByPrimaryKey(SyncStockBasic record);

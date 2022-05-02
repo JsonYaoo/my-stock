@@ -31,7 +31,7 @@ public interface TushareClient {
     )
     JSONObject doQuery(@DataParam(TushareConstant.BODY_API_NAME_TEMPLATE) String apiName,
                        @DataParam(TushareConstant.BODY_TOKEN_TEMPLATE) String token,
-                       @DataParam(TushareConstant.BODY_PARAMS_TEMPLATE) String params,
+                       @DataParam(TushareConstant.BODY_PARAMS_TEMPLATE) Object params,
                        @DataParam(TushareConstant.BODY_FIELDS_TEMPLATE) String fields
     );
 

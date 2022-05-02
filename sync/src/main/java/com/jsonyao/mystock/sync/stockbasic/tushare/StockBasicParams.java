@@ -10,7 +10,7 @@ import lombok.Data;
  * @since 20220502
  */
 @Data
-public class SyncStockBasicParams extends TushareBaseParams {
+public class StockBasicParams extends TushareBaseParams {
 
     /**
      * 是否沪深港通标的，N否 H沪股通 S深股通
@@ -25,7 +25,7 @@ public class SyncStockBasicParams extends TushareBaseParams {
     /**
      * 交易所代码
      */
-    private String stockExchange;
+    private String exchange;
 
     /**
      * TS股票代码
@@ -40,7 +40,7 @@ public class SyncStockBasicParams extends TushareBaseParams {
     /**
      * 股票名称
      */
-    private String stockName;
+    private String name;
 
     /**
      * 页容量

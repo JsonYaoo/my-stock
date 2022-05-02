@@ -13,7 +13,7 @@
     <result column="EN_NAME" jdbcType="VARCHAR" property="enName" />
     <result column="CN_SPELL" jdbcType="VARCHAR" property="cnSpell" />
     <result column="MARKET" jdbcType="VARCHAR" property="market" />
-    <result column="STOCK_EXCHANGE" jdbcType="VARCHAR" property="stockExchange" />
+    <result column="EXCHANGE" jdbcType="VARCHAR" property="exchange" />
     <result column="CURR_TYPE" jdbcType="VARCHAR" property="currType" />
     <result column="LIST_STATUS" jdbcType="VARCHAR" property="listStatus" />
     <result column="LIST_DATE" jdbcType="DATE" property="listDate" />
@@ -27,7 +27,7 @@
 
   <sql id="Base_Column_List">
     STOCK_BASIC_ID, TS_CODE, SYMBOL, STOCK_NAME, AREA, INDUSTRY, FULL_NAME, EN_NAME, 
-    CN_SPELL, MARKET, STOCK_EXCHANGE, CURR_TYPE, LIST_STATUS, LIST_DATE, DELIST_DATE, 
+    CN_SPELL, MARKET, EXCHANGE, CURR_TYPE, LIST_STATUS, LIST_DATE, DELIST_DATE, 
     IS_HS, CREATION_DATE, LAST_UPDATE_DATE, DELETE_FLAG, VERSION
   </sql>
 
@@ -36,6 +36,12 @@
     <include refid="Base_Column_List" />
     from sync_stock_basic
     where STOCK_BASIC_ID = #{stockBasicId,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectAll" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sync_stock_basic
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
@@ -55,14 +61,14 @@
     insert into sync_stock_basic (TS_CODE, SYMBOL, STOCK_NAME, 
       AREA, INDUSTRY, FULL_NAME, 
       EN_NAME, CN_SPELL, MARKET, 
-      STOCK_EXCHANGE, CURR_TYPE, LIST_STATUS, 
+      EXCHANGE, CURR_TYPE, LIST_STATUS, 
       LIST_DATE, DELIST_DATE, IS_HS, 
       CREATION_DATE, LAST_UPDATE_DATE, DELETE_FLAG, 
       VERSION)
     values (#{tsCode,jdbcType=VARCHAR}, #{symbol,jdbcType=VARCHAR}, #{stockName,jdbcType=VARCHAR}, 
       #{area,jdbcType=VARCHAR}, #{industry,jdbcType=VARCHAR}, #{fullName,jdbcType=VARCHAR}, 
       #{enName,jdbcType=VARCHAR}, #{cnSpell,jdbcType=VARCHAR}, #{market,jdbcType=VARCHAR}, 
-      #{stockExchange,jdbcType=VARCHAR}, #{currType,jdbcType=VARCHAR}, #{listStatus,jdbcType=VARCHAR}, 
+      #{exchange,jdbcType=VARCHAR}, #{currType,jdbcType=VARCHAR}, #{listStatus,jdbcType=VARCHAR}, 
       #{listDate,jdbcType=DATE}, #{delistDate,jdbcType=DATE}, #{isHs,jdbcType=VARCHAR}, 
       #{creationDate,jdbcType=TIMESTAMP}, #{lastUpdateDate,jdbcType=TIMESTAMP}, #{deleteFlag,jdbcType=TINYINT}, 
       #{version,jdbcType=BIGINT})
@@ -98,8 +104,8 @@
       <if test="market != null">
         MARKET,
       </if>
-      <if test="stockExchange != null">
-        STOCK_EXCHANGE,
+      <if test="exchange != null">
+        EXCHANGE,
       </if>
       <if test="currType != null">
         CURR_TYPE,
@@ -157,8 +163,8 @@
       <if test="market != null">
         #{market,jdbcType=VARCHAR},
       </if>
-      <if test="stockExchange != null">
-        #{stockExchange,jdbcType=VARCHAR},
+      <if test="exchange != null">
+        #{exchange,jdbcType=VARCHAR},
       </if>
       <if test="currType != null">
         #{currType,jdbcType=VARCHAR},
@@ -221,8 +227,8 @@
         <if test="item.market != null">
           MARKET,
         </if>
-        <if test="item.stockExchange != null">
-          STOCK_EXCHANGE,
+        <if test="item.exchange != null">
+          EXCHANGE,
         </if>
         <if test="item.currType != null">
           CURR_TYPE,
@@ -280,8 +286,8 @@
         <if test="item.market != null">
           #{item.market,jdbcType=VARCHAR},
         </if>
-        <if test="item.stockExchange != null">
-          #{item.stockExchange,jdbcType=VARCHAR},
+        <if test="item.exchange != null">
+          #{item.exchange,jdbcType=VARCHAR},
         </if>
         <if test="item.currType != null">
           #{item.currType,jdbcType=VARCHAR},
@@ -344,8 +350,8 @@
       <if test="market != null">
         MARKET = #{market,jdbcType=VARCHAR},
       </if>
-      <if test="stockExchange != null">
-        STOCK_EXCHANGE = #{stockExchange,jdbcType=VARCHAR},
+      <if test="exchange != null">
+        EXCHANGE = #{exchange,jdbcType=VARCHAR},
       </if>
       <if test="currType != null">
         CURR_TYPE = #{currType,jdbcType=VARCHAR},
@@ -389,7 +395,7 @@
       EN_NAME = #{enName,jdbcType=VARCHAR},
       CN_SPELL = #{cnSpell,jdbcType=VARCHAR},
       MARKET = #{market,jdbcType=VARCHAR},
-      STOCK_EXCHANGE = #{stockExchange,jdbcType=VARCHAR},
+      EXCHANGE = #{exchange,jdbcType=VARCHAR},
       CURR_TYPE = #{currType,jdbcType=VARCHAR},
       LIST_STATUS = #{listStatus,jdbcType=VARCHAR},
       LIST_DATE = #{listDate,jdbcType=DATE},

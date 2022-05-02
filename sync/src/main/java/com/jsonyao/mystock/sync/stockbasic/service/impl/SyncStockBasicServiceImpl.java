@@ -8,9 +8,9 @@ import com.jsonyao.mystock.common.util.CommonDateUtil;
 import com.jsonyao.mystock.common.util.CommonObjectUtil;
 import com.jsonyao.mystock.sync.stockbasic.entity.SyncStockBasic;
 import com.jsonyao.mystock.sync.stockbasic.mapper.SyncStockBasicMapper;
-import com.jsonyao.mystock.sync.stockbasic.service.StockBasicSyncService;
+import com.jsonyao.mystock.sync.stockbasic.service.SyncStockBasicService;
 import com.jsonyao.mystock.sync.stockbasic.tushare.StockBasicFields;
-import com.jsonyao.mystock.sync.stockbasic.tushare.SyncStockBasicParams;
+import com.jsonyao.mystock.sync.stockbasic.tushare.StockBasicParams;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,7 @@ import java.util.Set;
  */
 @Service
 @Slf4j
-public class StockBasicSyncServiceImpl implements StockBasicSyncService {
+public class SyncStockBasicServiceImpl implements SyncStockBasicService {
 
     public static final StockBasicFields STOCK_BASIC_FIELDS = new StockBasicFields();
 
@@ -42,12 +42,12 @@ public class StockBasicSyncServiceImpl implements StockBasicSyncService {
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
     @Override
-    public void syncStockBasics(SyncStockBasicParams syncStockBasicParams) {
-        log.info("同步沪深股票_基础数据_股票列表_120: syncStockBasicBO={}", JSONObject.toJSONString(syncStockBasicParams));
+    public void syncStockBasics(StockBasicParams stockBasicParams) {
+        log.info("同步沪深股票_基础数据_股票列表_120: stockBasicParams={}", JSONObject.toJSONString(stockBasicParams));
 
         // 通用TuShare请求查询 => 沪深股票_基础数据_股票列表_120
         List<StockBasicFields> stockBasicFields = tushareClientProxy.queryOn120(
-                TushareApiEnum.STOCK_BASIC, syncStockBasicParams, STOCK_BASIC_FIELDS, StockBasicFields.class);
+                TushareApiEnum.STOCK_BASIC, stockBasicParams, STOCK_BASIC_FIELDS, StockBasicFields.class);
         if(CollectionUtils.isEmpty(stockBasicFields)) {
             log.info("同步沪深股票_基础数据_股票列表_120 <= 同步不到任何数据, 本次作业已结束！");
             return;
@@ -86,6 +86,7 @@ public class StockBasicSyncServiceImpl implements StockBasicSyncService {
         syncStockBasicMapper.batchDeleteByCode(Lists.newArrayList(tsCodeSet));
     }
 
+    /** 构建实体列表 */
     private List<SyncStockBasic> buildSyncStockBasics(List<StockBasicFields> stockBasicFields) {
         if(CollectionUtils.isEmpty(stockBasicFields)) {
             return null;
@@ -106,7 +107,7 @@ public class StockBasicSyncServiceImpl implements StockBasicSyncService {
             entity.setEnName(fields.getEnname());
             entity.setCnSpell(fields.getCnspell());
             entity.setMarket(fields.getMarket());
-            entity.setStockExchange(fields.getExchange());
+            entity.setExchange(fields.getExchange());
             entity.setCurrType(fields.getCurr_type());
             entity.setListStatus(fields.getList_status());
             entity.setListDate(CommonDateUtil.parseyyyyMMdd2Date(fields.getList_date()));
@@ -116,5 +117,11 @@ public class StockBasicSyncServiceImpl implements StockBasicSyncService {
         }
 
         return entityList;
+    }
+
+    @Override
+    public List<SyncStockBasic> queryAllSyncStockBasics() {
+        log.info("查询所有股票列表~");
+        return syncStockBasicMapper.selectAll();
     }
 }

@@ -13,7 +13,8 @@ import lombok.Getter;
 @Getter
 public enum TushareApiEnum {
 
-    STOCK_BASIC("stock_basic", "沪深股票_基础数据_股票列表_120", 120)
+    STOCK_BASIC("stock_basic", "沪深股票_基础数据_股票列表_120", 120),
+    STOCK_COMPANY("stock_company", "沪深股票_基础数据_上市公司基本信息_120", 120)
 
     ;
 

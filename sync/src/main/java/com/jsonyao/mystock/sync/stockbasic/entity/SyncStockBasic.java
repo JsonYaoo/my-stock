@@ -81,8 +81,8 @@ public class SyncStockBasic {
     /**
      * 交易所代码
      */
-    @Column(name = "STOCK_EXCHANGE")
-    private String stockExchange;
+    @Column(name = "EXCHANGE")
+    private String exchange;
 
     /**
      * 交易货币
