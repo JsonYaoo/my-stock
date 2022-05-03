@@ -8,10 +8,10 @@
 	</appender>
 
 	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>./logs/mystock.log</file>
+		<file>E:/logs/my-stock/sync.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 设置文件名称 -->
-            <fileNamePattern>./logs/quality.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>E:/logs/my-stock/sync.%d{yyyy-MM-dd}.log</fileNamePattern>
             <!-- 设置最大保存周期 -->
             <MaxHistory>30</MaxHistory>
         </rollingPolicy>
