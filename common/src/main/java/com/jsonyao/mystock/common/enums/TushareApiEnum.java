@@ -17,6 +17,7 @@ public enum TushareApiEnum {
     STOCK_COMPANY("stock_company", "沪深股票_基础数据_上市公司基本信息_120", 120),
     BAK_BASIC("bak_basic", "沪深股票_基础数据_备用列表_5000", 120),
     TRADE_CAL("trade_cal", "沪深股票_基础数据_交易日历_免费", 0),
+    DAILY("daily", "沪深股票_行情数据_A股日线行情_120", 120),
 
     ;
 

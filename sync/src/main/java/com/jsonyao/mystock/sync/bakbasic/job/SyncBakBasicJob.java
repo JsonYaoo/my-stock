@@ -67,6 +67,6 @@ public class SyncBakBasicJob implements TushareBaseJob {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        doJob();
+//        doJob();
     }
 }
