@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsonyao.mystock.sync.bakbasic.mapper.SyncBakBasicMapper">
+
+  <resultMap id="BaseResultMap" type="com.jsonyao.mystock.sync.bakbasic.entity.SyncBakBasic">
+    <id column="BAK_ID" jdbcType="BIGINT" property="bakId" />
+    <result column="TRADE_DATE" jdbcType="DATE" property="tradeDate" />
+    <result column="TS_CODE" jdbcType="VARCHAR" property="tsCode" />
+    <result column="STOCK_NAME" jdbcType="VARCHAR" property="stockName" />
+    <result column="INDUSTRY" jdbcType="VARCHAR" property="industry" />
+    <result column="AREA" jdbcType="VARCHAR" property="area" />
+    <result column="PE" jdbcType="DOUBLE" property="pe" />
+    <result column="FLOAT_SHARE" jdbcType="DOUBLE" property="floatShare" />
+    <result column="TOTAL_SHARE" jdbcType="DOUBLE" property="totalShare" />
+    <result column="TOTAL_ASSETS" jdbcType="DOUBLE" property="totalAssets" />
+    <result column="LIQUID_ASSETS" jdbcType="DOUBLE" property="liquidAssets" />
+    <result column="FIXED_ASSETS" jdbcType="DOUBLE" property="fixedAssets" />
+    <result column="RESERVED" jdbcType="DOUBLE" property="reserved" />
+    <result column="RESERVED_PERSHARE" jdbcType="DOUBLE" property="reservedPershare" />
+    <result column="EPS" jdbcType="DOUBLE" property="eps" />
+    <result column="BVPS" jdbcType="DOUBLE" property="bvps" />
+    <result column="PB" jdbcType="DOUBLE" property="pb" />
+    <result column="LIST_DATE" jdbcType="DATE" property="listDate" />
+    <result column="UNDP" jdbcType="DOUBLE" property="undp" />
+    <result column="PER_UNDP" jdbcType="DOUBLE" property="perUndp" />
+    <result column="REV_YOY" jdbcType="DOUBLE" property="revYoy" />
+    <result column="PROFIT_YOY" jdbcType="DOUBLE" property="profitYoy" />
+    <result column="GPR" jdbcType="DOUBLE" property="gpr" />
+    <result column="NPR" jdbcType="DOUBLE" property="npr" />
+    <result column="HOLDER_NUM" jdbcType="BIGINT" property="holderNum" />
+    <result column="CREATION_DATE" jdbcType="TIMESTAMP" property="creationDate" />
+    <result column="LAST_UPDATE_DATE" jdbcType="TIMESTAMP" property="lastUpdateDate" />
+    <result column="DELETE_FLAG" jdbcType="TINYINT" property="deleteFlag" />
+    <result column="VERSION" jdbcType="BIGINT" property="version" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    BAK_ID, TRADE_DATE, TS_CODE, STOCK_NAME, INDUSTRY, AREA, PE, FLOAT_SHARE, TOTAL_SHARE, 
+    TOTAL_ASSETS, LIQUID_ASSETS, FIXED_ASSETS, RESERVED, RESERVED_PERSHARE, EPS, BVPS, 
+    PB, LIST_DATE, UNDP, PER_UNDP, REV_YOY, PROFIT_YOY, GPR, NPR, HOLDER_NUM, CREATION_DATE, 
+    LAST_UPDATE_DATE, DELETE_FLAG, VERSION
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sync_bak_basic
+    where BAK_ID = #{bakId,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sync_bak_basic
+    where BAK_ID = #{bakId,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="batchDeleteByCode" parameterType="java.util.List">
+    delete from sync_bak_basic
+    where (TRADE_DATE, TS_CODE) IN
+    <foreach collection="list" item="item" separator="," open="(" close=")">
+      (#{item.tradeDate}, #{item.tsCode})
+    </foreach>
+  </delete>
+
+  <insert id="insert" keyColumn="BAK_ID" keyProperty="bakId" parameterType="com.jsonyao.mystock.sync.bakbasic.entity.SyncBakBasic" useGeneratedKeys="true">
+    insert into sync_bak_basic (TRADE_DATE, TS_CODE, STOCK_NAME, 
+      INDUSTRY, AREA, PE, 
+      FLOAT_SHARE, TOTAL_SHARE, TOTAL_ASSETS, 
+      LIQUID_ASSETS, FIXED_ASSETS, RESERVED, 
+      RESERVED_PERSHARE, EPS, BVPS, 
+      PB, LIST_DATE, UNDP, PER_UNDP, 
+      REV_YOY, PROFIT_YOY, GPR, 
+      NPR, HOLDER_NUM, CREATION_DATE, 
+      LAST_UPDATE_DATE, DELETE_FLAG, VERSION
+      )
+    values (#{tradeDate,jdbcType=DATE}, #{tsCode,jdbcType=VARCHAR}, #{stockName,jdbcType=VARCHAR}, 
+      #{industry,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, #{pe,jdbcType=DOUBLE}, 
+      #{floatShare,jdbcType=DOUBLE}, #{totalShare,jdbcType=DOUBLE}, #{totalAssets,jdbcType=DOUBLE}, 
+      #{liquidAssets,jdbcType=DOUBLE}, #{fixedAssets,jdbcType=DOUBLE}, #{reserved,jdbcType=DOUBLE}, 
+      #{reservedPershare,jdbcType=DOUBLE}, #{eps,jdbcType=DOUBLE}, #{bvps,jdbcType=DOUBLE}, 
+      #{pb,jdbcType=DOUBLE}, #{listDate,jdbcType=DATE}, #{undp,jdbcType=DOUBLE}, #{perUndp,jdbcType=DOUBLE}, 
+      #{revYoy,jdbcType=DOUBLE}, #{profitYoy,jdbcType=DOUBLE}, #{gpr,jdbcType=DOUBLE}, 
+      #{npr,jdbcType=DOUBLE}, #{holderNum,jdbcType=BIGINT}, #{creationDate,jdbcType=TIMESTAMP}, 
+      #{lastUpdateDate,jdbcType=TIMESTAMP}, #{deleteFlag,jdbcType=TINYINT}, #{version,jdbcType=BIGINT}
+      )
+  </insert>
+
+  <insert id="insertSelective" keyColumn="BAK_ID" keyProperty="bakId" parameterType="com.jsonyao.mystock.sync.bakbasic.entity.SyncBakBasic" useGeneratedKeys="true">
+    insert into sync_bak_basic
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tradeDate != null">
+        TRADE_DATE,
+      </if>
+      <if test="tsCode != null">
+        TS_CODE,
+      </if>
+      <if test="stockName != null">
+        STOCK_NAME,
+      </if>
+      <if test="industry != null">
+        INDUSTRY,
+      </if>
+      <if test="area != null">
+        AREA,
+      </if>
+      <if test="pe != null">
+        PE,
+      </if>
+      <if test="floatShare != null">
+        FLOAT_SHARE,
+      </if>
+      <if test="totalShare != null">
+        TOTAL_SHARE,
+      </if>
+      <if test="totalAssets != null">
+        TOTAL_ASSETS,
+      </if>
+      <if test="liquidAssets != null">
+        LIQUID_ASSETS,
+      </if>
+      <if test="fixedAssets != null">
+        FIXED_ASSETS,
+      </if>
+      <if test="reserved != null">
+        RESERVED,
+      </if>
+      <if test="reservedPershare != null">
+        RESERVED_PERSHARE,
+      </if>
+      <if test="eps != null">
+        EPS,
+      </if>
+      <if test="bvps != null">
+        BVPS,
+      </if>
+      <if test="pb != null">
+        PB,
+      </if>
+      <if test="listDate != null">
+        LIST_DATE,
+      </if>
+      <if test="undp != null">
+        UNDP,
+      </if>
+      <if test="perUndp != null">
+        PER_UNDP,
+      </if>
+      <if test="revYoy != null">
+        REV_YOY,
+      </if>
+      <if test="profitYoy != null">
+        PROFIT_YOY,
+      </if>
+      <if test="gpr != null">
+        GPR,
+      </if>
+      <if test="npr != null">
+        NPR,
+      </if>
+      <if test="holderNum != null">
+        HOLDER_NUM,
+      </if>
+      <if test="creationDate != null">
+        CREATION_DATE,
+      </if>
+      <if test="lastUpdateDate != null">
+        LAST_UPDATE_DATE,
+      </if>
+      <if test="deleteFlag != null">
+        DELETE_FLAG,
+      </if>
+      <if test="version != null">
+        VERSION,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tradeDate != null">
+        #{tradeDate,jdbcType=DATE},
+      </if>
+      <if test="tsCode != null">
+        #{tsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="stockName != null">
+        #{stockName,jdbcType=VARCHAR},
+      </if>
+      <if test="industry != null">
+        #{industry,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null">
+        #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="pe != null">
+        #{pe,jdbcType=DOUBLE},
+      </if>
+      <if test="floatShare != null">
+        #{floatShare,jdbcType=DOUBLE},
+      </if>
+      <if test="totalShare != null">
+        #{totalShare,jdbcType=DOUBLE},
+      </if>
+      <if test="totalAssets != null">
+        #{totalAssets,jdbcType=DOUBLE},
+      </if>
+      <if test="liquidAssets != null">
+        #{liquidAssets,jdbcType=DOUBLE},
+      </if>
+      <if test="fixedAssets != null">
+        #{fixedAssets,jdbcType=DOUBLE},
+      </if>
+      <if test="reserved != null">
+        #{reserved,jdbcType=DOUBLE},
+      </if>
+      <if test="reservedPershare != null">
+        #{reservedPershare,jdbcType=DOUBLE},
+      </if>
+      <if test="eps != null">
+        #{eps,jdbcType=DOUBLE},
+      </if>
+      <if test="bvps != null">
+        #{bvps,jdbcType=DOUBLE},
+      </if>
+      <if test="pb != null">
+        #{pb,jdbcType=DOUBLE},
+      </if>
+      <if test="listDate != null">
+        #{listDate,jdbcType=DATE},
+      </if>
+      <if test="undp != null">
+        #{undp,jdbcType=DOUBLE},
+      </if>
+      <if test="perUndp != null">
+        #{perUndp,jdbcType=DOUBLE},
+      </if>
+      <if test="revYoy != null">
+        #{revYoy,jdbcType=DOUBLE},
+      </if>
+      <if test="profitYoy != null">
+        #{profitYoy,jdbcType=DOUBLE},
+      </if>
+      <if test="gpr != null">
+        #{gpr,jdbcType=DOUBLE},
+      </if>
+      <if test="npr != null">
+        #{npr,jdbcType=DOUBLE},
+      </if>
+      <if test="holderNum != null">
+        #{holderNum,jdbcType=BIGINT},
+      </if>
+      <if test="creationDate != null">
+        #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateDate != null">
+        #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteFlag != null">
+        #{deleteFlag,jdbcType=TINYINT},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+  <insert id="batchInsertSelective" parameterType="java.util.List">
+    <foreach collection="list" item="item" index="index"  separator=";">
+      insert into sync_bak_basic
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="item.tradeDate != null">
+          TRADE_DATE,
+        </if>
+        <if test="item.tsCode != null">
+          TS_CODE,
+        </if>
+        <if test="item.stockName != null">
+          STOCK_NAME,
+        </if>
+        <if test="item.industry != null">
+          INDUSTRY,
+        </if>
+        <if test="item.area != null">
+          AREA,
+        </if>
+        <if test="item.pe != null">
+          PE,
+        </if>
+        <if test="item.floatShare != null">
+          FLOAT_SHARE,
+        </if>
+        <if test="item.totalShare != null">
+          TOTAL_SHARE,
+        </if>
+        <if test="item.totalAssets != null">
+          TOTAL_ASSETS,
+        </if>
+        <if test="item.liquidAssets != null">
+          LIQUID_ASSETS,
+        </if>
+        <if test="item.fixedAssets != null">
+          FIXED_ASSETS,
+        </if>
+        <if test="item.reserved != null">
+          RESERVED,
+        </if>
+        <if test="item.reservedPershare != null">
+          RESERVED_PERSHARE,
+        </if>
+        <if test="item.eps != null">
+          EPS,
+        </if>
+        <if test="item.bvps != null">
+          BVPS,
+        </if>
+        <if test="item.pb != null">
+          PB,
+        </if>
+        <if test="item.listDate != null">
+          LIST_DATE,
+        </if>
+        <if test="item.undp != null">
+          UNDP,
+        </if>
+        <if test="item.perUndp != null">
+          PER_UNDP,
+        </if>
+        <if test="item.revYoy != null">
+          REV_YOY,
+        </if>
+        <if test="item.profitYoy != null">
+          PROFIT_YOY,
+        </if>
+        <if test="item.gpr != null">
+          GPR,
+        </if>
+        <if test="item.npr != null">
+          NPR,
+        </if>
+        <if test="item.holderNum != null">
+          HOLDER_NUM,
+        </if>
+        <if test="item.creationDate != null">
+          CREATION_DATE,
+        </if>
+        <if test="item.lastUpdateDate != null">
+          LAST_UPDATE_DATE,
+        </if>
+        <if test="item.deleteFlag != null">
+          DELETE_FLAG,
+        </if>
+        <if test="item.version != null">
+          VERSION,
+        </if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="item.tradeDate != null">
+          #{item.tradeDate,jdbcType=DATE},
+        </if>
+        <if test="item.tsCode != null">
+          #{item.tsCode,jdbcType=VARCHAR},
+        </if>
+        <if test="item.stockName != null">
+          #{item.stockName,jdbcType=VARCHAR},
+        </if>
+        <if test="item.industry != null">
+          #{item.industry,jdbcType=VARCHAR},
+        </if>
+        <if test="item.area != null">
+          #{item.area,jdbcType=VARCHAR},
+        </if>
+        <if test="item.pe != null">
+          #{item.pe,jdbcType=DOUBLE},
+        </if>
+        <if test="item.floatShare != null">
+          #{item.floatShare,jdbcType=DOUBLE},
+        </if>
+        <if test="item.totalShare != null">
+          #{item.totalShare,jdbcType=DOUBLE},
+        </if>
+        <if test="item.totalAssets != null">
+          #{item.totalAssets,jdbcType=DOUBLE},
+        </if>
+        <if test="item.liquidAssets != null">
+          #{item.liquidAssets,jdbcType=DOUBLE},
+        </if>
+        <if test="item.fixedAssets != null">
+          #{item.fixedAssets,jdbcType=DOUBLE},
+        </if>
+        <if test="item.reserved != null">
+          #{item.reserved,jdbcType=DOUBLE},
+        </if>
+        <if test="item.reservedPershare != null">
+          #{item.reservedPershare,jdbcType=DOUBLE},
+        </if>
+        <if test="item.eps != null">
+          #{item.eps,jdbcType=DOUBLE},
+        </if>
+        <if test="item.bvps != null">
+          #{item.bvps,jdbcType=DOUBLE},
+        </if>
+        <if test="item.pb != null">
+          #{item.pb,jdbcType=DOUBLE},
+        </if>
+        <if test="item.listDate != null">
+          #{item.listDate,jdbcType=DATE},
+        </if>
+        <if test="item.undp != null">
+          #{item.undp,jdbcType=DOUBLE},
+        </if>
+        <if test="item.perUndp != null">
+          #{item.perUndp,jdbcType=DOUBLE},
+        </if>
+        <if test="item.revYoy != null">
+          #{item.revYoy,jdbcType=DOUBLE},
+        </if>
+        <if test="item.profitYoy != null">
+          #{item.profitYoy,jdbcType=DOUBLE},
+        </if>
+        <if test="item.gpr != null">
+          #{item.gpr,jdbcType=DOUBLE},
+        </if>
+        <if test="item.npr != null">
+          #{item.npr,jdbcType=DOUBLE},
+        </if>
+        <if test="item.holderNum != null">
+          #{item.holderNum,jdbcType=BIGINT},
+        </if>
+        <if test="item.creationDate != null">
+          #{item.creationDate,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.lastUpdateDate != null">
+          #{item.lastUpdateDate,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.deleteFlag != null">
+          #{item.deleteFlag,jdbcType=TINYINT},
+        </if>
+        <if test="item.version != null">
+          #{item.version,jdbcType=BIGINT},
+        </if>
+      </trim>
+    </foreach>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.jsonyao.mystock.sync.bakbasic.entity.SyncBakBasic">
+    update sync_bak_basic
+    <set>
+      <if test="tradeDate != null">
+        TRADE_DATE = #{tradeDate,jdbcType=DATE},
+      </if>
+      <if test="tsCode != null">
+        TS_CODE = #{tsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="stockName != null">
+        STOCK_NAME = #{stockName,jdbcType=VARCHAR},
+      </if>
+      <if test="industry != null">
+        INDUSTRY = #{industry,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null">
+        AREA = #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="pe != null">
+        PE = #{pe,jdbcType=DOUBLE},
+      </if>
+      <if test="floatShare != null">
+        FLOAT_SHARE = #{floatShare,jdbcType=DOUBLE},
+      </if>
+      <if test="totalShare != null">
+        TOTAL_SHARE = #{totalShare,jdbcType=DOUBLE},
+      </if>
+      <if test="totalAssets != null">
+        TOTAL_ASSETS = #{totalAssets,jdbcType=DOUBLE},
+      </if>
+      <if test="liquidAssets != null">
+        LIQUID_ASSETS = #{liquidAssets,jdbcType=DOUBLE},
+      </if>
+      <if test="fixedAssets != null">
+        FIXED_ASSETS = #{fixedAssets,jdbcType=DOUBLE},
+      </if>
+      <if test="reserved != null">
+        RESERVED = #{reserved,jdbcType=DOUBLE},
+      </if>
+      <if test="reservedPershare != null">
+        RESERVED_PERSHARE = #{reservedPershare,jdbcType=DOUBLE},
+      </if>
+      <if test="eps != null">
+        EPS = #{eps,jdbcType=DOUBLE},
+      </if>
+      <if test="bvps != null">
+        BVPS = #{bvps,jdbcType=DOUBLE},
+      </if>
+      <if test="pb != null">
+        PB = #{pb,jdbcType=DOUBLE},
+      </if>
+      <if test="listDate != null">
+        LIST_DATE = #{listDate,jdbcType=DATE},
+      </if>
+      <if test="undp != null">
+        UNDP = #{undp,jdbcType=DOUBLE},
+      </if>
+      <if test="perUndp != null">
+        PER_UNDP = #{perUndp,jdbcType=DOUBLE},
+      </if>
+      <if test="revYoy != null">
+        REV_YOY = #{revYoy,jdbcType=DOUBLE},
+      </if>
+      <if test="profitYoy != null">
+        PROFIT_YOY = #{profitYoy,jdbcType=DOUBLE},
+      </if>
+      <if test="gpr != null">
+        GPR = #{gpr,jdbcType=DOUBLE},
+      </if>
+      <if test="npr != null">
+        NPR = #{npr,jdbcType=DOUBLE},
+      </if>
+      <if test="holderNum != null">
+        HOLDER_NUM = #{holderNum,jdbcType=BIGINT},
+      </if>
+      <if test="creationDate != null">
+        CREATION_DATE = #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateDate != null">
+        LAST_UPDATE_DATE = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteFlag != null">
+        DELETE_FLAG = #{deleteFlag,jdbcType=TINYINT},
+      </if>
+      <if test="version != null">
+        VERSION = #{version,jdbcType=BIGINT},
+      </if>
+    </set>
+    where BAK_ID = #{bakId,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.jsonyao.mystock.sync.bakbasic.entity.SyncBakBasic">
+    update sync_bak_basic
+    set TRADE_DATE = #{tradeDate,jdbcType=DATE},
+      TS_CODE = #{tsCode,jdbcType=VARCHAR},
+      STOCK_NAME = #{stockName,jdbcType=VARCHAR},
+      INDUSTRY = #{industry,jdbcType=VARCHAR},
+      AREA = #{area,jdbcType=VARCHAR},
+      PE = #{pe,jdbcType=DOUBLE},
+      FLOAT_SHARE = #{floatShare,jdbcType=DOUBLE},
+      TOTAL_SHARE = #{totalShare,jdbcType=DOUBLE},
+      TOTAL_ASSETS = #{totalAssets,jdbcType=DOUBLE},
+      LIQUID_ASSETS = #{liquidAssets,jdbcType=DOUBLE},
+      FIXED_ASSETS = #{fixedAssets,jdbcType=DOUBLE},
+      RESERVED = #{reserved,jdbcType=DOUBLE},
+      RESERVED_PERSHARE = #{reservedPershare,jdbcType=DOUBLE},
+      EPS = #{eps,jdbcType=DOUBLE},
+      BVPS = #{bvps,jdbcType=DOUBLE},
+      PB = #{pb,jdbcType=DOUBLE},
+      LIST_DATE = #{listDate,jdbcType=DATE},
+      UNDP = #{undp,jdbcType=DOUBLE},
+      PER_UNDP = #{perUndp,jdbcType=DOUBLE},
+      REV_YOY = #{revYoy,jdbcType=DOUBLE},
+      PROFIT_YOY = #{profitYoy,jdbcType=DOUBLE},
+      GPR = #{gpr,jdbcType=DOUBLE},
+      NPR = #{npr,jdbcType=DOUBLE},
+      HOLDER_NUM = #{holderNum,jdbcType=BIGINT},
+      CREATION_DATE = #{creationDate,jdbcType=TIMESTAMP},
+      LAST_UPDATE_DATE = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      DELETE_FLAG = #{deleteFlag,jdbcType=TINYINT},
+      VERSION = #{version,jdbcType=BIGINT}
+    where BAK_ID = #{bakId,jdbcType=BIGINT}
+  </update>
+</mapper>
