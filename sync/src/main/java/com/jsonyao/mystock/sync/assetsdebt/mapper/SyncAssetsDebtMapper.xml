@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsonyao.mystock.sync.assetsdebt.mapper.SyncAssetsDebtMapper">
+
+  <resultMap id="BaseResultMap" type="com.jsonyao.mystock.sync.assetsdebt.entity.SyncAssetsDebt">
+    <id column="DEBT_ID" jdbcType="BIGINT" property="debtId" />
+    <result column="YEAR" jdbcType="BIGINT" property="year" />
+    <result column="QUARTER" jdbcType="TINYINT" property="quarter" />
+    <result column="TS_CODE" jdbcType="VARCHAR" property="tsCode" />
+    <result column="STOCK_NAME" jdbcType="VARCHAR" property="stockName" />
+    <result column="INDUSTRY" jdbcType="VARCHAR" property="industry" />
+    <result column="TOTAL_ASSETS" jdbcType="DOUBLE" property="totalAssets" />
+    <result column="PH_TOTAL_EQUITY" jdbcType="DOUBLE" property="phTotalEquity" />
+    <result column="PH_NET_PROFIT" jdbcType="DOUBLE" property="phNetProfit" />
+    <result column="TOTAL_OP_INCOME" jdbcType="DOUBLE" property="totalOpIncome" />
+    <result column="OP_INCOME" jdbcType="DOUBLE" property="opIncome" />
+    <result column="SALES_COSTS" jdbcType="DOUBLE" property="salesCosts" />
+    <result column="MANAGEMENT_COSTS" jdbcType="DOUBLE" property="managementCosts" />
+    <result column="FINANCIAL_COSTS" jdbcType="DOUBLE" property="financialCosts" />
+    <result column="RD_COSTS" jdbcType="DOUBLE" property="rdCosts" />
+    <result column="INVENTORY" jdbcType="DOUBLE" property="inventory" />
+    <result column="ACCOUNTS_PAYABLE" jdbcType="DOUBLE" property="accountsPayable" />
+    <result column="ACCOUNTS_RECEIVABLE" jdbcType="DOUBLE" property="accountsReceivable" />
+    <result column="PREPAYMENTS" jdbcType="DOUBLE" property="prepayments" />
+    <result column="ADVANCE_PAYMENT" jdbcType="DOUBLE" property="advancePayment" />
+    <result column="CREATION_DATE" jdbcType="TIMESTAMP" property="creationDate" />
+    <result column="LAST_UPDATE_DATE" jdbcType="TIMESTAMP" property="lastUpdateDate" />
+    <result column="DELETE_FLAG" jdbcType="TINYINT" property="deleteFlag" />
+    <result column="VERSION" jdbcType="BIGINT" property="version" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    DEBT_ID, YEAR, QUARTER, TS_CODE, STOCK_NAME, INDUSTRY, TOTAL_ASSETS, PH_TOTAL_EQUITY, PH_NET_PROFIT,
+    TOTAL_OP_INCOME, OP_INCOME, SALES_COSTS, MANAGEMENT_COSTS, FINANCIAL_COSTS, RD_COSTS, 
+    INVENTORY, ACCOUNTS_PAYABLE, ACCOUNTS_RECEIVABLE, PREPAYMENTS, ADVANCE_PAYMENT, CREATION_DATE, 
+    LAST_UPDATE_DATE, DELETE_FLAG, VERSION
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sync_assets_debt
+    where DEBT_ID = #{debtId,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sync_assets_debt
+    where DEBT_ID = #{debtId,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="batchDeleteByCode" parameterType="java.util.List">
+    delete from sync_assets_debt
+    where (YEAR, QUARTER, TS_CODE) IN
+    <foreach collection="list" item="item" separator="," open="(" close=")">
+      (#{item.year}, #{item.quarter}, #{item.tsCode})
+    </foreach>
+  </delete>
+
+  <insert id="insert" keyColumn="DEBT_ID" keyProperty="debtId" parameterType="com.jsonyao.mystock.sync.assetsdebt.entity.SyncAssetsDebt" useGeneratedKeys="true">
+    insert into sync_assets_debt (YEAR, QUARTER, TS_CODE, STOCK_NAME,
+      INDUSTRY, TOTAL_ASSETS, PH_TOTAL_EQUITY, 
+      PH_NET_PROFIT, TOTAL_OP_INCOME, OP_INCOME, 
+      SALES_COSTS, MANAGEMENT_COSTS, FINANCIAL_COSTS, 
+      RD_COSTS, INVENTORY, ACCOUNTS_PAYABLE, 
+      ACCOUNTS_RECEIVABLE, PREPAYMENTS, ADVANCE_PAYMENT, 
+      CREATION_DATE, LAST_UPDATE_DATE, DELETE_FLAG, 
+      VERSION)
+    values (#{year,jdbcType=BIGINT}, #{quarter,jdbcType=TINYINT}, #{tsCode,jdbcType=VARCHAR}, #{stockName,jdbcType=VARCHAR},
+      #{industry,jdbcType=VARCHAR}, #{totalAssets,jdbcType=DOUBLE}, #{phTotalEquity,jdbcType=DOUBLE}, 
+      #{phNetProfit,jdbcType=DOUBLE}, #{totalOpIncome,jdbcType=DOUBLE}, #{opIncome,jdbcType=DOUBLE}, 
+      #{salesCosts,jdbcType=DOUBLE}, #{managementCosts,jdbcType=DOUBLE}, #{financialCosts,jdbcType=DOUBLE}, 
+      #{rdCosts,jdbcType=DOUBLE}, #{inventory,jdbcType=DOUBLE}, #{accountsPayable,jdbcType=DOUBLE}, 
+      #{accountsReceivable,jdbcType=DOUBLE}, #{prepayments,jdbcType=DOUBLE}, #{advancePayment,jdbcType=DOUBLE}, 
+      #{creationDate,jdbcType=TIMESTAMP}, #{lastUpdateDate,jdbcType=TIMESTAMP}, #{deleteFlag,jdbcType=TINYINT}, 
+      #{version,jdbcType=BIGINT})
+  </insert>
+
+  <insert id="insertSelective" keyColumn="DEBT_ID" keyProperty="debtId" parameterType="com.jsonyao.mystock.sync.assetsdebt.entity.SyncAssetsDebt" useGeneratedKeys="true">
+    insert into sync_assets_debt
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="year != null">
+        YEAR,
+      </if>
+      <if test="quarter != null">
+        QUARTER,
+      </if>
+      <if test="tsCode != null">
+        TS_CODE,
+      </if>
+      <if test="stockName != null">
+        STOCK_NAME,
+      </if>
+      <if test="industry != null">
+        INDUSTRY,
+      </if>
+      <if test="totalAssets != null">
+        TOTAL_ASSETS,
+      </if>
+      <if test="phTotalEquity != null">
+        PH_TOTAL_EQUITY,
+      </if>
+      <if test="phNetProfit != null">
+        PH_NET_PROFIT,
+      </if>
+      <if test="totalOpIncome != null">
+        TOTAL_OP_INCOME,
+      </if>
+      <if test="opIncome != null">
+        OP_INCOME,
+      </if>
+      <if test="salesCosts != null">
+        SALES_COSTS,
+      </if>
+      <if test="managementCosts != null">
+        MANAGEMENT_COSTS,
+      </if>
+      <if test="financialCosts != null">
+        FINANCIAL_COSTS,
+      </if>
+      <if test="rdCosts != null">
+        RD_COSTS,
+      </if>
+      <if test="inventory != null">
+        INVENTORY,
+      </if>
+      <if test="accountsPayable != null">
+        ACCOUNTS_PAYABLE,
+      </if>
+      <if test="accountsReceivable != null">
+        ACCOUNTS_RECEIVABLE,
+      </if>
+      <if test="prepayments != null">
+        PREPAYMENTS,
+      </if>
+      <if test="advancePayment != null">
+        ADVANCE_PAYMENT,
+      </if>
+      <if test="creationDate != null">
+        CREATION_DATE,
+      </if>
+      <if test="lastUpdateDate != null">
+        LAST_UPDATE_DATE,
+      </if>
+      <if test="deleteFlag != null">
+        DELETE_FLAG,
+      </if>
+      <if test="version != null">
+        VERSION,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="year != null">
+        #{YEAR,jdbcType=BIGINT},
+      </if>
+      <if test="quarter != null">
+        #{quarter,jdbcType=TINYINT},
+      </if>
+      <if test="tsCode != null">
+        #{tsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="stockName != null">
+        #{stockName,jdbcType=VARCHAR},
+      </if>
+      <if test="industry != null">
+        #{industry,jdbcType=VARCHAR},
+      </if>
+      <if test="totalAssets != null">
+        #{totalAssets,jdbcType=DOUBLE},
+      </if>
+      <if test="phTotalEquity != null">
+        #{phTotalEquity,jdbcType=DOUBLE},
+      </if>
+      <if test="phNetProfit != null">
+        #{phNetProfit,jdbcType=DOUBLE},
+      </if>
+      <if test="totalOpIncome != null">
+        #{totalOpIncome,jdbcType=DOUBLE},
+      </if>
+      <if test="opIncome != null">
+        #{opIncome,jdbcType=DOUBLE},
+      </if>
+      <if test="salesCosts != null">
+        #{salesCosts,jdbcType=DOUBLE},
+      </if>
+      <if test="managementCosts != null">
+        #{managementCosts,jdbcType=DOUBLE},
+      </if>
+      <if test="financialCosts != null">
+        #{financialCosts,jdbcType=DOUBLE},
+      </if>
+      <if test="rdCosts != null">
+        #{rdCosts,jdbcType=DOUBLE},
+      </if>
+      <if test="inventory != null">
+        #{inventory,jdbcType=DOUBLE},
+      </if>
+      <if test="accountsPayable != null">
+        #{accountsPayable,jdbcType=DOUBLE},
+      </if>
+      <if test="accountsReceivable != null">
+        #{accountsReceivable,jdbcType=DOUBLE},
+      </if>
+      <if test="prepayments != null">
+        #{prepayments,jdbcType=DOUBLE},
+      </if>
+      <if test="advancePayment != null">
+        #{advancePayment,jdbcType=DOUBLE},
+      </if>
+      <if test="creationDate != null">
+        #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateDate != null">
+        #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteFlag != null">
+        #{deleteFlag,jdbcType=TINYINT},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+  <insert id="batchInsertSelective" parameterType="java.util.List">
+    <foreach collection="list" item="item" index="index"  separator=";">
+      insert into sync_assets_debt
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="item.year != null">
+          YEAR,
+        </if>
+        <if test="item.quarter != null">
+          QUARTER,
+        </if>
+        <if test="item.tsCode != null">
+          TS_CODE,
+        </if>
+        <if test="item.stockName != null">
+          STOCK_NAME,
+        </if>
+        <if test="item.industry != null">
+          INDUSTRY,
+        </if>
+        <if test="item.totalAssets != null">
+          TOTAL_ASSETS,
+        </if>
+        <if test="item.phTotalEquity != null">
+          PH_TOTAL_EQUITY,
+        </if>
+        <if test="item.phNetProfit != null">
+          PH_NET_PROFIT,
+        </if>
+        <if test="item.totalOpIncome != null">
+          TOTAL_OP_INCOME,
+        </if>
+        <if test="item.opIncome != null">
+          OP_INCOME,
+        </if>
+        <if test="item.salesCosts != null">
+          SALES_COSTS,
+        </if>
+        <if test="item.managementCosts != null">
+          MANAGEMENT_COSTS,
+        </if>
+        <if test="item.financialCosts != null">
+          FINANCIAL_COSTS,
+        </if>
+        <if test="item.rdCosts != null">
+          RD_COSTS,
+        </if>
+        <if test="item.inventory != null">
+          INVENTORY,
+        </if>
+        <if test="item.accountsPayable != null">
+          ACCOUNTS_PAYABLE,
+        </if>
+        <if test="item.accountsReceivable != null">
+          ACCOUNTS_RECEIVABLE,
+        </if>
+        <if test="item.prepayments != null">
+          PREPAYMENTS,
+        </if>
+        <if test="item.advancePayment != null">
+          ADVANCE_PAYMENT,
+        </if>
+        <if test="item.creationDate != null">
+          CREATION_DATE,
+        </if>
+        <if test="item.lastUpdateDate != null">
+          LAST_UPDATE_DATE,
+        </if>
+        <if test="item.deleteFlag != null">
+          DELETE_FLAG,
+        </if>
+        <if test="item.version != null">
+          VERSION,
+        </if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="item.year != null">
+          #{item.year,jdbcType=BIGINT},
+        </if>
+        <if test="item.quarter != null">
+          #{item.quarter,jdbcType=TINYINT},
+        </if>
+        <if test="item.tsCode != null">
+          #{item.tsCode,jdbcType=VARCHAR},
+        </if>
+        <if test="item.stockName != null">
+          #{item.stockName,jdbcType=VARCHAR},
+        </if>
+        <if test="item.industry != null">
+          #{item.industry,jdbcType=VARCHAR},
+        </if>
+        <if test="item.totalAssets != null">
+          #{item.totalAssets,jdbcType=DOUBLE},
+        </if>
+        <if test="item.phTotalEquity != null">
+          #{item.phTotalEquity,jdbcType=DOUBLE},
+        </if>
+        <if test="item.phNetProfit != null">
+          #{item.phNetProfit,jdbcType=DOUBLE},
+        </if>
+        <if test="item.totalOpIncome != null">
+          #{item.totalOpIncome,jdbcType=DOUBLE},
+        </if>
+        <if test="item.opIncome != null">
+          #{item.opIncome,jdbcType=DOUBLE},
+        </if>
+        <if test="item.salesCosts != null">
+          #{item.salesCosts,jdbcType=DOUBLE},
+        </if>
+        <if test="item.managementCosts != null">
+          #{item.managementCosts,jdbcType=DOUBLE},
+        </if>
+        <if test="item.financialCosts != null">
+          #{item.financialCosts,jdbcType=DOUBLE},
+        </if>
+        <if test="item.rdCosts != null">
+          #{item.rdCosts,jdbcType=DOUBLE},
+        </if>
+        <if test="item.inventory != null">
+          #{item.inventory,jdbcType=DOUBLE},
+        </if>
+        <if test="item.accountsPayable != null">
+          #{item.accountsPayable,jdbcType=DOUBLE},
+        </if>
+        <if test="item.accountsReceivable != null">
+          #{item.accountsReceivable,jdbcType=DOUBLE},
+        </if>
+        <if test="item.prepayments != null">
+          #{item.prepayments,jdbcType=DOUBLE},
+        </if>
+        <if test="item.advancePayment != null">
+          #{item.advancePayment,jdbcType=DOUBLE},
+        </if>
+        <if test="item.creationDate != null">
+          #{item.creationDate,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.lastUpdateDate != null">
+          #{item.lastUpdateDate,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.deleteFlag != null">
+          #{item.deleteFlag,jdbcType=TINYINT},
+        </if>
+        <if test="item.version != null">
+          #{item.version,jdbcType=BIGINT},
+        </if>
+      </trim>
+    </foreach>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.jsonyao.mystock.sync.assetsdebt.entity.SyncAssetsDebt">
+    update sync_assets_debt
+    <set>
+      <if test="year != null">
+        YEAR = #{quarter,jdbcType=BIGINT},
+      </if>
+      <if test="quarter != null">
+        QUARTER = #{quarter,jdbcType=TINYINT},
+      </if>
+      <if test="tsCode != null">
+        TS_CODE = #{tsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="stockName != null">
+        STOCK_NAME = #{stockName,jdbcType=VARCHAR},
+      </if>
+      <if test="industry != null">
+        INDUSTRY = #{industry,jdbcType=VARCHAR},
+      </if>
+      <if test="totalAssets != null">
+        TOTAL_ASSETS = #{totalAssets,jdbcType=DOUBLE},
+      </if>
+      <if test="phTotalEquity != null">
+        PH_TOTAL_EQUITY = #{phTotalEquity,jdbcType=DOUBLE},
+      </if>
+      <if test="phNetProfit != null">
+        PH_NET_PROFIT = #{phNetProfit,jdbcType=DOUBLE},
+      </if>
+      <if test="totalOpIncome != null">
+        TOTAL_OP_INCOME = #{totalOpIncome,jdbcType=DOUBLE},
+      </if>
+      <if test="opIncome != null">
+        OP_INCOME = #{opIncome,jdbcType=DOUBLE},
+      </if>
+      <if test="salesCosts != null">
+        SALES_COSTS = #{salesCosts,jdbcType=DOUBLE},
+      </if>
+      <if test="managementCosts != null">
+        MANAGEMENT_COSTS = #{managementCosts,jdbcType=DOUBLE},
+      </if>
+      <if test="financialCosts != null">
+        FINANCIAL_COSTS = #{financialCosts,jdbcType=DOUBLE},
+      </if>
+      <if test="rdCosts != null">
+        RD_COSTS = #{rdCosts,jdbcType=DOUBLE},
+      </if>
+      <if test="inventory != null">
+        INVENTORY = #{inventory,jdbcType=DOUBLE},
+      </if>
+      <if test="accountsPayable != null">
+        ACCOUNTS_PAYABLE = #{accountsPayable,jdbcType=DOUBLE},
+      </if>
+      <if test="accountsReceivable != null">
+        ACCOUNTS_RECEIVABLE = #{accountsReceivable,jdbcType=DOUBLE},
+      </if>
+      <if test="prepayments != null">
+        PREPAYMENTS = #{prepayments,jdbcType=DOUBLE},
+      </if>
+      <if test="advancePayment != null">
+        ADVANCE_PAYMENT = #{advancePayment,jdbcType=DOUBLE},
+      </if>
+      <if test="creationDate != null">
+        CREATION_DATE = #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateDate != null">
+        LAST_UPDATE_DATE = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteFlag != null">
+        DELETE_FLAG = #{deleteFlag,jdbcType=TINYINT},
+      </if>
+      <if test="version != null">
+        VERSION = #{version,jdbcType=BIGINT},
+      </if>
+    </set>
+    where DEBT_ID = #{debtId,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.jsonyao.mystock.sync.assetsdebt.entity.SyncAssetsDebt">
+    update sync_assets_debt
+    set
+      YEAR = #{year,jdbcType=BIGINT},
+      QUARTER = #{quarter,jdbcType=TINYINT},
+      TS_CODE = #{tsCode,jdbcType=VARCHAR},
+      STOCK_NAME = #{stockName,jdbcType=VARCHAR},
+      INDUSTRY = #{industry,jdbcType=VARCHAR},
+      TOTAL_ASSETS = #{totalAssets,jdbcType=DOUBLE},
+      PH_TOTAL_EQUITY = #{phTotalEquity,jdbcType=DOUBLE},
+      PH_NET_PROFIT = #{phNetProfit,jdbcType=DOUBLE},
+      TOTAL_OP_INCOME = #{totalOpIncome,jdbcType=DOUBLE},
+      OP_INCOME = #{opIncome,jdbcType=DOUBLE},
+      SALES_COSTS = #{salesCosts,jdbcType=DOUBLE},
+      MANAGEMENT_COSTS = #{managementCosts,jdbcType=DOUBLE},
+      FINANCIAL_COSTS = #{financialCosts,jdbcType=DOUBLE},
+      RD_COSTS = #{rdCosts,jdbcType=DOUBLE},
+      INVENTORY = #{inventory,jdbcType=DOUBLE},
+      ACCOUNTS_PAYABLE = #{accountsPayable,jdbcType=DOUBLE},
+      ACCOUNTS_RECEIVABLE = #{accountsReceivable,jdbcType=DOUBLE},
+      PREPAYMENTS = #{prepayments,jdbcType=DOUBLE},
+      ADVANCE_PAYMENT = #{advancePayment,jdbcType=DOUBLE},
+      CREATION_DATE = #{creationDate,jdbcType=TIMESTAMP},
+      LAST_UPDATE_DATE = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      DELETE_FLAG = #{deleteFlag,jdbcType=TINYINT},
+      VERSION = #{version,jdbcType=BIGINT}
+    where DEBT_ID = #{debtId,jdbcType=BIGINT}
+  </update>
+</mapper>

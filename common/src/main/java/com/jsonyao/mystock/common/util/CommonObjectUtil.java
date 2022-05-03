@@ -79,6 +79,45 @@ public class CommonObjectUtil {
     }
 
     /**
+     * 按照size进行分批删除
+     *
+     * @param mapList
+     * @param size
+     * @param consumer
+     * @param <T>
+     */
+    public static <T> void batchDeleteBySize(List<T> mapList, int size, Consumer<List<T>> consumer) {
+        if (CollectionUtils.isEmpty(mapList)) {
+            return;
+        }
+
+        // 获取分批组数
+        int batchCount;
+        int remaining = mapList.size() % size;
+        if (remaining == 0) {
+            batchCount = mapList.size() / size;
+        } else {
+            batchCount = mapList.size() / size + 1;
+        }
+
+        // 分批插入
+        List<T> list;
+        for (int i = 0; i < batchCount; i++) {
+            // 最后一批
+            if (i == batchCount - 1) {
+                list = mapList.subList(size * i, mapList.size());
+            }
+            // 非最后一批
+            else {
+                list = mapList.subList(size * i, size * i + size);
+            }
+
+            // 批量插入
+            consumer.accept(list);
+        }
+    }
+
+    /**
      * 按照size进行分批插入
      *
      * @param entityList

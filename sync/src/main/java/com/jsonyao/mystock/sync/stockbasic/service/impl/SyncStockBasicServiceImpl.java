@@ -18,10 +18,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 沪深股票_基础数据_股票列表_120 业务实现层
@@ -34,6 +32,7 @@ import java.util.Set;
 public class SyncStockBasicServiceImpl implements SyncStockBasicService {
 
     public static final StockBasicFields STOCK_BASIC_FIELDS = new StockBasicFields();
+    public static final Map<String, String> SYMBOL_TSCODE_CACHE = new ConcurrentHashMap<>();
 
     @Autowired
     private TushareClientProxy tushareClientProxy;
@@ -123,5 +122,25 @@ public class SyncStockBasicServiceImpl implements SyncStockBasicService {
     public List<SyncStockBasic> queryAllSyncStockBasics() {
         log.info("查询所有股票列表~");
         return syncStockBasicMapper.selectAll();
+    }
+
+    @Override
+    public Map<String, String> queryTsCodeCache() {
+        log.info("查询所有股票代码-TS股票代码缓存~");
+        if(!CollectionUtils.isEmpty(SYMBOL_TSCODE_CACHE)) {
+            return Collections.unmodifiableMap(SYMBOL_TSCODE_CACHE);
+        }
+
+        List<SyncStockBasic> syncStockBasics = queryAllSyncStockBasics();
+        if(CollectionUtils.isEmpty(syncStockBasics)) {
+            SYMBOL_TSCODE_CACHE.clear();
+            return null;
+        }
+
+        for (SyncStockBasic basic : syncStockBasics) {
+            SYMBOL_TSCODE_CACHE.put(basic.getSymbol(), basic.getTsCode());
+        }
+
+        return Collections.unmodifiableMap(SYMBOL_TSCODE_CACHE);
     }
 }
