@@ -5,6 +5,7 @@ import com.jsonyao.mystock.common.job.TushareBaseJob;
 import com.jsonyao.mystock.common.util.CommonDateUtil;
 import com.jsonyao.mystock.sync.bakbasic.service.SyncBakBasicService;
 import com.jsonyao.mystock.sync.bakbasic.tushare.BakBasicParams;
+import com.jsonyao.mystock.sync.tradeCal.service.TradeCalService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -25,6 +26,8 @@ public class SyncBakBasicJob implements TushareBaseJob {
 
     @Autowired
     private SyncBakBasicService syncBakBasicService;
+    @Autowired
+    private TradeCalService tradeCalService;
 
     /**
      * 定时沪深股票_基础数据_备用列表_5000
@@ -44,8 +47,13 @@ public class SyncBakBasicJob implements TushareBaseJob {
         StopWatch stopWatch = new StopWatch(getDesc());
         stopWatch.start();
 
+        // 上一个交易日
+        Date now = new Date();
+        Date preTradeDate = tradeCalService.queryPreTradeDate(now);
+
+        // 更新数据至上一个交易日
         BakBasicParams bakBasicParams = new BakBasicParams();
-        bakBasicParams.setTrade_date(CommonDateUtil.formatDate2yyyyMMdd(new Date()));
+        bakBasicParams.setTrade_date(CommonDateUtil.formatDate2yyyyMMdd(preTradeDate));
         syncBakBasicService.syncBakBasics(bakBasicParams);
 
         stopWatch.stop();
@@ -59,6 +67,6 @@ public class SyncBakBasicJob implements TushareBaseJob {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-//        doJob();
+        doJob();
     }
 }
