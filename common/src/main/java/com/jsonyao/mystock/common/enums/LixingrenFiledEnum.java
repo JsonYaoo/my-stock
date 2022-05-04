@@ -32,12 +32,12 @@ public enum LixingrenFiledEnum {
     PREPAYMENTS("prepayments", "预付款项", LixingrenTableEnum.SYNC_ASSETS_DEBT.getValue(), "prepayments"),
     ADVANCE_PAYMENT("advance_payment", "预收账款", LixingrenTableEnum.SYNC_ASSETS_DEBT.getValue(), "advancePayment"),
 
-    FIXED_INTANGIBLE_LONGTERM_ASSETS_COSTS("fixed_intangible_longterm_assets_costs", "购建固定资产、无形资产及其他长期资产所支付的现金", LixingrenTableEnum.SYNC_CASH_FLOW.getValue(), ""),
-    CASH_FLOW_FROM_SALES("cash_flow_from_sales", "销售商品提供劳务收到的现金", LixingrenTableEnum.SYNC_CASH_FLOW.getValue(), ""),
-    FREE_CASH_FLOW("free_cash_flow", "自由现金流量", LixingrenTableEnum.SYNC_CASH_FLOW.getValue(), ""),
-    NET_CASH_FLOW_FROM_BUSINESS("net_cash_flow_from_business", "经营活动产生的现金流量净额", LixingrenTableEnum.SYNC_CASH_FLOW.getValue(), ""),
-    NET_CASH_FLOW_FROM_INVESTMENT("net_cash_flow_from_investment", "投资活动产生的现金流量净额", LixingrenTableEnum.SYNC_CASH_FLOW.getValue(), ""),
-    NET_CASH_FLOW_FROM_FINANCING("net_cash_flow_from_financing", "筹资活动产生的现金流量净额", LixingrenTableEnum.SYNC_CASH_FLOW.getValue(), ""),
+    FIXED_INTANGIBLE_LONGTERM_ASSETS_COSTS("fixed_intangible_longterm_assets_costs", "购建固定资产、无形资产及其他长期资产所支付的现金", LixingrenTableEnum.SYNC_CASH_FLOW.getValue(), "filAssetsCosts"),
+    CASH_FLOW_FROM_SALES("cash_flow_from_sales", "销售商品提供劳务收到的现金", LixingrenTableEnum.SYNC_CASH_FLOW.getValue(), "cfFromSales"),
+    FREE_CASH_FLOW("free_cash_flow", "自由现金流量", LixingrenTableEnum.SYNC_CASH_FLOW.getValue(), "freeCashFlow"),
+    NET_CASH_FLOW_FROM_BUSINESS("net_cash_flow_from_business", "经营活动产生的现金流量净额", LixingrenTableEnum.SYNC_CASH_FLOW.getValue(), "ncfFromBusiness"),
+    NET_CASH_FLOW_FROM_INVESTMENT("net_cash_flow_from_investment", "投资活动产生的现金流量净额", LixingrenTableEnum.SYNC_CASH_FLOW.getValue(), "ncfFromInvestment"),
+    NET_CASH_FLOW_FROM_FINANCING("net_cash_flow_from_financing", "筹资活动产生的现金流量净额", LixingrenTableEnum.SYNC_CASH_FLOW.getValue(), "ncfFromFinancing"),
 
     TOTAL_SHARE_CAPITAL("total_share_capital", "总股本", LixingrenTableEnum.SYNC_FINANCE_INDEX.getValue(), ""),
     DIVIDEND_RATIO("dividend_ratio", "分红率", LixingrenTableEnum.SYNC_FINANCE_INDEX.getValue(), ""),
