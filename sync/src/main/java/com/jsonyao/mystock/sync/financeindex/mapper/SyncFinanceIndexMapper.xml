@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsonyao.mystock.sync.financeindex.mapper.SyncFinanceIndexMapper">
+
+  <resultMap id="BaseResultMap" type="com.jsonyao.mystock.sync.financeindex.entity.SyncFinanceIndex">
+    <id column="INDEX_ID" jdbcType="BIGINT" property="indexId" />
+    <result column="YEAR" jdbcType="BIGINT" property="year" />
+    <result column="QUARTER" jdbcType="TINYINT" property="quarter" />
+    <result column="TS_CODE" jdbcType="VARCHAR" property="tsCode" />
+    <result column="STOCK_NAME" jdbcType="VARCHAR" property="stockName" />
+    <result column="INDUSTRY" jdbcType="VARCHAR" property="industry" />
+    <result column="TOTAL_SHARE_CAPITAL" jdbcType="DOUBLE" property="totalShareCapital" />
+    <result column="DIVIDEND_RATIO" jdbcType="DOUBLE" property="dividendRatio" />
+    <result column="PH_WEIGHTED_ROE" jdbcType="DOUBLE" property="phWeightedRoe" />
+    <result column="NET_PROFIT_RATIO" jdbcType="DOUBLE" property="netProfitRatio" />
+    <result column="GROSS_MARGIN_GM" jdbcType="DOUBLE" property="grossMarginGm" />
+    <result column="LEVERAGE" jdbcType="DOUBLE" property="leverage" />
+    <result column="ASSETS_LIA_RATIO" jdbcType="DOUBLE" property="assetsLiaRatio" />
+    <result column="IB_DEBT_RATIO" jdbcType="DOUBLE" property="ibDebtRatio" />
+    <result column="CURRENT_RATIO" jdbcType="DOUBLE" property="currentRatio" />
+    <result column="QUICK_RATIO" jdbcType="DOUBLE" property="quickRatio" />
+    <result column="SALES_COSTS_RATIO" jdbcType="DOUBLE" property="salesCostsRatio" />
+    <result column="MAG_COSTS_RATIO" jdbcType="DOUBLE" property="magCostsRatio" />
+    <result column="FIN_COSTS_RATIO" jdbcType="DOUBLE" property="finCostsRatio" />
+    <result column="RD_COSTS_RATIO" jdbcType="DOUBLE" property="rdCostsRatio" />
+    <result column="ASSET_TURNOVER_RATIO" jdbcType="DOUBLE" property="assetTurnoverRatio" />
+    <result column="INVENTORY_TD" jdbcType="DOUBLE" property="inventoryTd" />
+    <result column="ACCOUNTS_PAYABLE_TD" jdbcType="DOUBLE" property="accountsPayableTd" />
+    <result column="ACCOUNTS_RECEIVABLE_TD" jdbcType="DOUBLE" property="accountsReceivableTd" />
+    <result column="PREPAYMENTS_TD" jdbcType="DOUBLE" property="prepaymentsTd" />
+    <result column="ADVANCE_PAYMENT_TD" jdbcType="DOUBLE" property="advancePaymentTd" />
+    <result column="CREATION_DATE" jdbcType="TIMESTAMP" property="creationDate" />
+    <result column="LAST_UPDATE_DATE" jdbcType="TIMESTAMP" property="lastUpdateDate" />
+    <result column="DELETE_FLAG" jdbcType="TINYINT" property="deleteFlag" />
+    <result column="VERSION" jdbcType="BIGINT" property="version" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    INDEX_ID, `YEAR`, QUARTER, TS_CODE, STOCK_NAME, INDUSTRY, TOTAL_SHARE_CAPITAL, DIVIDEND_RATIO, 
+    PH_WEIGHTED_ROE, NET_PROFIT_RATIO, GROSS_MARGIN_GM, LEVERAGE, ASSETS_LIA_RATIO, IB_DEBT_RATIO, 
+    CURRENT_RATIO, QUICK_RATIO, SALES_COSTS_RATIO, MAG_COSTS_RATIO, FIN_COSTS_RATIO, 
+    RD_COSTS_RATIO, ASSET_TURNOVER_RATIO, INVENTORY_TD, ACCOUNTS_PAYABLE_TD, ACCOUNTS_RECEIVABLE_TD, 
+    PREPAYMENTS_TD, ADVANCE_PAYMENT_TD, CREATION_DATE, LAST_UPDATE_DATE, DELETE_FLAG, 
+    VERSION
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sync_finance_index
+    where INDEX_ID = #{indexId,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sync_finance_index
+    where INDEX_ID = #{indexId,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="batchDeleteByCode" parameterType="java.util.List">
+    delete from sync_finance_index
+    where (YEAR, QUARTER, TS_CODE) IN
+    <foreach collection="list" item="item" separator="," open="(" close=")">
+      (#{item.year}, #{item.quarter}, #{item.tsCode})
+    </foreach>
+  </delete>
+
+  <insert id="insert" keyColumn="INDEX_ID" keyProperty="indexId" parameterType="com.jsonyao.mystock.sync.financeindex.entity.SyncFinanceIndex" useGeneratedKeys="true">
+    insert into sync_finance_index (`YEAR`, QUARTER, TS_CODE, 
+      STOCK_NAME, INDUSTRY, TOTAL_SHARE_CAPITAL, 
+      DIVIDEND_RATIO, PH_WEIGHTED_ROE, NET_PROFIT_RATIO, 
+      GROSS_MARGIN_GM, LEVERAGE, ASSETS_LIA_RATIO, 
+      IB_DEBT_RATIO, CURRENT_RATIO, QUICK_RATIO, 
+      SALES_COSTS_RATIO, MAG_COSTS_RATIO, FIN_COSTS_RATIO, 
+      RD_COSTS_RATIO, ASSET_TURNOVER_RATIO, INVENTORY_TD, 
+      ACCOUNTS_PAYABLE_TD, ACCOUNTS_RECEIVABLE_TD, 
+      PREPAYMENTS_TD, ADVANCE_PAYMENT_TD, CREATION_DATE, 
+      LAST_UPDATE_DATE, DELETE_FLAG, VERSION
+      )
+    values (#{year,jdbcType=BIGINT}, #{quarter,jdbcType=TINYINT}, #{tsCode,jdbcType=VARCHAR}, 
+      #{stockName,jdbcType=VARCHAR}, #{industry,jdbcType=VARCHAR}, #{totalShareCapital,jdbcType=DOUBLE}, 
+      #{dividendRatio,jdbcType=DOUBLE}, #{phWeightedRoe,jdbcType=DOUBLE}, #{netProfitRatio,jdbcType=DOUBLE}, 
+      #{grossMarginGm,jdbcType=DOUBLE}, #{leverage,jdbcType=DOUBLE}, #{assetsLiaRatio,jdbcType=DOUBLE}, 
+      #{ibDebtRatio,jdbcType=DOUBLE}, #{currentRatio,jdbcType=DOUBLE}, #{quickRatio,jdbcType=DOUBLE}, 
+      #{salesCostsRatio,jdbcType=DOUBLE}, #{magCostsRatio,jdbcType=DOUBLE}, #{finCostsRatio,jdbcType=DOUBLE}, 
+      #{rdCostsRatio,jdbcType=DOUBLE}, #{assetTurnoverRatio,jdbcType=DOUBLE}, #{inventoryTd,jdbcType=DOUBLE}, 
+      #{accountsPayableTd,jdbcType=DOUBLE}, #{accountsReceivableTd,jdbcType=DOUBLE}, 
+      #{prepaymentsTd,jdbcType=DOUBLE}, #{advancePaymentTd,jdbcType=DOUBLE}, #{creationDate,jdbcType=TIMESTAMP}, 
+      #{lastUpdateDate,jdbcType=TIMESTAMP}, #{deleteFlag,jdbcType=TINYINT}, #{version,jdbcType=BIGINT}
+      )
+  </insert>
+
+  <insert id="insertSelective" keyColumn="INDEX_ID" keyProperty="indexId" parameterType="com.jsonyao.mystock.sync.financeindex.entity.SyncFinanceIndex" useGeneratedKeys="true">
+    insert into sync_finance_index
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="year != null">
+        `YEAR`,
+      </if>
+      <if test="quarter != null">
+        QUARTER,
+      </if>
+      <if test="tsCode != null">
+        TS_CODE,
+      </if>
+      <if test="stockName != null">
+        STOCK_NAME,
+      </if>
+      <if test="industry != null">
+        INDUSTRY,
+      </if>
+      <if test="totalShareCapital != null">
+        TOTAL_SHARE_CAPITAL,
+      </if>
+      <if test="dividendRatio != null">
+        DIVIDEND_RATIO,
+      </if>
+      <if test="phWeightedRoe != null">
+        PH_WEIGHTED_ROE,
+      </if>
+      <if test="netProfitRatio != null">
+        NET_PROFIT_RATIO,
+      </if>
+      <if test="grossMarginGm != null">
+        GROSS_MARGIN_GM,
+      </if>
+      <if test="leverage != null">
+        LEVERAGE,
+      </if>
+      <if test="assetsLiaRatio != null">
+        ASSETS_LIA_RATIO,
+      </if>
+      <if test="ibDebtRatio != null">
+        IB_DEBT_RATIO,
+      </if>
+      <if test="currentRatio != null">
+        CURRENT_RATIO,
+      </if>
+      <if test="quickRatio != null">
+        QUICK_RATIO,
+      </if>
+      <if test="salesCostsRatio != null">
+        SALES_COSTS_RATIO,
+      </if>
+      <if test="magCostsRatio != null">
+        MAG_COSTS_RATIO,
+      </if>
+      <if test="finCostsRatio != null">
+        FIN_COSTS_RATIO,
+      </if>
+      <if test="rdCostsRatio != null">
+        RD_COSTS_RATIO,
+      </if>
+      <if test="assetTurnoverRatio != null">
+        ASSET_TURNOVER_RATIO,
+      </if>
+      <if test="inventoryTd != null">
+        INVENTORY_TD,
+      </if>
+      <if test="accountsPayableTd != null">
+        ACCOUNTS_PAYABLE_TD,
+      </if>
+      <if test="accountsReceivableTd != null">
+        ACCOUNTS_RECEIVABLE_TD,
+      </if>
+      <if test="prepaymentsTd != null">
+        PREPAYMENTS_TD,
+      </if>
+      <if test="advancePaymentTd != null">
+        ADVANCE_PAYMENT_TD,
+      </if>
+      <if test="creationDate != null">
+        CREATION_DATE,
+      </if>
+      <if test="lastUpdateDate != null">
+        LAST_UPDATE_DATE,
+      </if>
+      <if test="deleteFlag != null">
+        DELETE_FLAG,
+      </if>
+      <if test="version != null">
+        VERSION,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="year != null">
+        #{year,jdbcType=BIGINT},
+      </if>
+      <if test="quarter != null">
+        #{quarter,jdbcType=TINYINT},
+      </if>
+      <if test="tsCode != null">
+        #{tsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="stockName != null">
+        #{stockName,jdbcType=VARCHAR},
+      </if>
+      <if test="industry != null">
+        #{industry,jdbcType=VARCHAR},
+      </if>
+      <if test="totalShareCapital != null">
+        #{totalShareCapital,jdbcType=DOUBLE},
+      </if>
+      <if test="dividendRatio != null">
+        #{dividendRatio,jdbcType=DOUBLE},
+      </if>
+      <if test="phWeightedRoe != null">
+        #{phWeightedRoe,jdbcType=DOUBLE},
+      </if>
+      <if test="netProfitRatio != null">
+        #{netProfitRatio,jdbcType=DOUBLE},
+      </if>
+      <if test="grossMarginGm != null">
+        #{grossMarginGm,jdbcType=DOUBLE},
+      </if>
+      <if test="leverage != null">
+        #{leverage,jdbcType=DOUBLE},
+      </if>
+      <if test="assetsLiaRatio != null">
+        #{assetsLiaRatio,jdbcType=DOUBLE},
+      </if>
+      <if test="ibDebtRatio != null">
+        #{ibDebtRatio,jdbcType=DOUBLE},
+      </if>
+      <if test="currentRatio != null">
+        #{currentRatio,jdbcType=DOUBLE},
+      </if>
+      <if test="quickRatio != null">
+        #{quickRatio,jdbcType=DOUBLE},
+      </if>
+      <if test="salesCostsRatio != null">
+        #{salesCostsRatio,jdbcType=DOUBLE},
+      </if>
+      <if test="magCostsRatio != null">
+        #{magCostsRatio,jdbcType=DOUBLE},
+      </if>
+      <if test="finCostsRatio != null">
+        #{finCostsRatio,jdbcType=DOUBLE},
+      </if>
+      <if test="rdCostsRatio != null">
+        #{rdCostsRatio,jdbcType=DOUBLE},
+      </if>
+      <if test="assetTurnoverRatio != null">
+        #{assetTurnoverRatio,jdbcType=DOUBLE},
+      </if>
+      <if test="inventoryTd != null">
+        #{inventoryTd,jdbcType=DOUBLE},
+      </if>
+      <if test="accountsPayableTd != null">
+        #{accountsPayableTd,jdbcType=DOUBLE},
+      </if>
+      <if test="accountsReceivableTd != null">
+        #{accountsReceivableTd,jdbcType=DOUBLE},
+      </if>
+      <if test="prepaymentsTd != null">
+        #{prepaymentsTd,jdbcType=DOUBLE},
+      </if>
+      <if test="advancePaymentTd != null">
+        #{advancePaymentTd,jdbcType=DOUBLE},
+      </if>
+      <if test="creationDate != null">
+        #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateDate != null">
+        #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteFlag != null">
+        #{deleteFlag,jdbcType=TINYINT},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+  <insert id="batchInsertSelective" parameterType="java.util.List">
+    <foreach collection="list" item="item" index="index"  separator=";">
+      insert into sync_finance_index
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="item.year != null">
+          `YEAR`,
+        </if>
+        <if test="item.quarter != null">
+          QUARTER,
+        </if>
+        <if test="item.tsCode != null">
+          TS_CODE,
+        </if>
+        <if test="item.stockName != null">
+          STOCK_NAME,
+        </if>
+        <if test="item.industry != null">
+          INDUSTRY,
+        </if>
+        <if test="item.totalShareCapital != null">
+          TOTAL_SHARE_CAPITAL,
+        </if>
+        <if test="item.dividendRatio != null">
+          DIVIDEND_RATIO,
+        </if>
+        <if test="item.phWeightedRoe != null">
+          PH_WEIGHTED_ROE,
+        </if>
+        <if test="item.netProfitRatio != null">
+          NET_PROFIT_RATIO,
+        </if>
+        <if test="item.grossMarginGm != null">
+          GROSS_MARGIN_GM,
+        </if>
+        <if test="item.leverage != null">
+          LEVERAGE,
+        </if>
+        <if test="item.assetsLiaRatio != null">
+          ASSETS_LIA_RATIO,
+        </if>
+        <if test="item.ibDebtRatio != null">
+          IB_DEBT_RATIO,
+        </if>
+        <if test="item.currentRatio != null">
+          CURRENT_RATIO,
+        </if>
+        <if test="item.quickRatio != null">
+          QUICK_RATIO,
+        </if>
+        <if test="item.salesCostsRatio != null">
+          SALES_COSTS_RATIO,
+        </if>
+        <if test="item.magCostsRatio != null">
+          MAG_COSTS_RATIO,
+        </if>
+        <if test="item.finCostsRatio != null">
+          FIN_COSTS_RATIO,
+        </if>
+        <if test="item.rdCostsRatio != null">
+          RD_COSTS_RATIO,
+        </if>
+        <if test="item.assetTurnoverRatio != null">
+          ASSET_TURNOVER_RATIO,
+        </if>
+        <if test="item.inventoryTd != null">
+          INVENTORY_TD,
+        </if>
+        <if test="item.accountsPayableTd != null">
+          ACCOUNTS_PAYABLE_TD,
+        </if>
+        <if test="item.accountsReceivableTd != null">
+          ACCOUNTS_RECEIVABLE_TD,
+        </if>
+        <if test="item.prepaymentsTd != null">
+          PREPAYMENTS_TD,
+        </if>
+        <if test="item.advancePaymentTd != null">
+          ADVANCE_PAYMENT_TD,
+        </if>
+        <if test="item.creationDate != null">
+          CREATION_DATE,
+        </if>
+        <if test="item.lastUpdateDate != null">
+          LAST_UPDATE_DATE,
+        </if>
+        <if test="item.deleteFlag != null">
+          DELETE_FLAG,
+        </if>
+        <if test="item.version != null">
+          VERSION,
+        </if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="item.year != null">
+          #{item.year,jdbcType=BIGINT},
+        </if>
+        <if test="item.quarter != null">
+          #{item.quarter,jdbcType=TINYINT},
+        </if>
+        <if test="item.tsCode != null">
+          #{item.tsCode,jdbcType=VARCHAR},
+        </if>
+        <if test="item.stockName != null">
+          #{item.stockName,jdbcType=VARCHAR},
+        </if>
+        <if test="item.industry != null">
+          #{item.industry,jdbcType=VARCHAR},
+        </if>
+        <if test="item.totalShareCapital != null">
+          #{item.totalShareCapital,jdbcType=DOUBLE},
+        </if>
+        <if test="item.dividendRatio != null">
+          #{item.dividendRatio,jdbcType=DOUBLE},
+        </if>
+        <if test="item.phWeightedRoe != null">
+          #{item.phWeightedRoe,jdbcType=DOUBLE},
+        </if>
+        <if test="item.netProfitRatio != null">
+          #{item.netProfitRatio,jdbcType=DOUBLE},
+        </if>
+        <if test="item.grossMarginGm != null">
+          #{item.grossMarginGm,jdbcType=DOUBLE},
+        </if>
+        <if test="item.leverage != null">
+          #{item.leverage,jdbcType=DOUBLE},
+        </if>
+        <if test="item.assetsLiaRatio != null">
+          #{item.assetsLiaRatio,jdbcType=DOUBLE},
+        </if>
+        <if test="item.ibDebtRatio != null">
+          #{item.ibDebtRatio,jdbcType=DOUBLE},
+        </if>
+        <if test="item.currentRatio != null">
+          #{item.currentRatio,jdbcType=DOUBLE},
+        </if>
+        <if test="item.quickRatio != null">
+          #{item.quickRatio,jdbcType=DOUBLE},
+        </if>
+        <if test="item.salesCostsRatio != null">
+          #{item.salesCostsRatio,jdbcType=DOUBLE},
+        </if>
+        <if test="item.magCostsRatio != null">
+          #{item.magCostsRatio,jdbcType=DOUBLE},
+        </if>
+        <if test="item.finCostsRatio != null">
+          #{item.finCostsRatio,jdbcType=DOUBLE},
+        </if>
+        <if test="item.rdCostsRatio != null">
+          #{item.rdCostsRatio,jdbcType=DOUBLE},
+        </if>
+        <if test="item.assetTurnoverRatio != null">
+          #{item.assetTurnoverRatio,jdbcType=DOUBLE},
+        </if>
+        <if test="item.inventoryTd != null">
+          #{item.inventoryTd,jdbcType=DOUBLE},
+        </if>
+        <if test="item.accountsPayableTd != null">
+          #{item.accountsPayableTd,jdbcType=DOUBLE},
+        </if>
+        <if test="item.accountsReceivableTd != null">
+          #{item.accountsReceivableTd,jdbcType=DOUBLE},
+        </if>
+        <if test="item.prepaymentsTd != null">
+          #{item.prepaymentsTd,jdbcType=DOUBLE},
+        </if>
+        <if test="item.advancePaymentTd != null">
+          #{item.advancePaymentTd,jdbcType=DOUBLE},
+        </if>
+        <if test="item.creationDate != null">
+          #{item.creationDate,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.lastUpdateDate != null">
+          #{item.lastUpdateDate,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.deleteFlag != null">
+          #{item.deleteFlag,jdbcType=TINYINT},
+        </if>
+        <if test="item.version != null">
+          #{item.version,jdbcType=BIGINT},
+        </if>
+      </trim>
+    </foreach>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.jsonyao.mystock.sync.financeindex.entity.SyncFinanceIndex">
+    update sync_finance_index
+    <set>
+      <if test="year != null">
+        `YEAR` = #{year,jdbcType=BIGINT},
+      </if>
+      <if test="quarter != null">
+        QUARTER = #{quarter,jdbcType=TINYINT},
+      </if>
+      <if test="tsCode != null">
+        TS_CODE = #{tsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="stockName != null">
+        STOCK_NAME = #{stockName,jdbcType=VARCHAR},
+      </if>
+      <if test="industry != null">
+        INDUSTRY = #{industry,jdbcType=VARCHAR},
+      </if>
+      <if test="totalShareCapital != null">
+        TOTAL_SHARE_CAPITAL = #{totalShareCapital,jdbcType=DOUBLE},
+      </if>
+      <if test="dividendRatio != null">
+        DIVIDEND_RATIO = #{dividendRatio,jdbcType=DOUBLE},
+      </if>
+      <if test="phWeightedRoe != null">
+        PH_WEIGHTED_ROE = #{phWeightedRoe,jdbcType=DOUBLE},
+      </if>
+      <if test="netProfitRatio != null">
+        NET_PROFIT_RATIO = #{netProfitRatio,jdbcType=DOUBLE},
+      </if>
+      <if test="grossMarginGm != null">
+        GROSS_MARGIN_GM = #{grossMarginGm,jdbcType=DOUBLE},
+      </if>
+      <if test="leverage != null">
+        LEVERAGE = #{leverage,jdbcType=DOUBLE},
+      </if>
+      <if test="assetsLiaRatio != null">
+        ASSETS_LIA_RATIO = #{assetsLiaRatio,jdbcType=DOUBLE},
+      </if>
+      <if test="ibDebtRatio != null">
+        IB_DEBT_RATIO = #{ibDebtRatio,jdbcType=DOUBLE},
+      </if>
+      <if test="currentRatio != null">
+        CURRENT_RATIO = #{currentRatio,jdbcType=DOUBLE},
+      </if>
+      <if test="quickRatio != null">
+        QUICK_RATIO = #{quickRatio,jdbcType=DOUBLE},
+      </if>
+      <if test="salesCostsRatio != null">
+        SALES_COSTS_RATIO = #{salesCostsRatio,jdbcType=DOUBLE},
+      </if>
+      <if test="magCostsRatio != null">
+        MAG_COSTS_RATIO = #{magCostsRatio,jdbcType=DOUBLE},
+      </if>
+      <if test="finCostsRatio != null">
+        FIN_COSTS_RATIO = #{finCostsRatio,jdbcType=DOUBLE},
+      </if>
+      <if test="rdCostsRatio != null">
+        RD_COSTS_RATIO = #{rdCostsRatio,jdbcType=DOUBLE},
+      </if>
+      <if test="assetTurnoverRatio != null">
+        ASSET_TURNOVER_RATIO = #{assetTurnoverRatio,jdbcType=DOUBLE},
+      </if>
+      <if test="inventoryTd != null">
+        INVENTORY_TD = #{inventoryTd,jdbcType=DOUBLE},
+      </if>
+      <if test="accountsPayableTd != null">
+        ACCOUNTS_PAYABLE_TD = #{accountsPayableTd,jdbcType=DOUBLE},
+      </if>
+      <if test="accountsReceivableTd != null">
+        ACCOUNTS_RECEIVABLE_TD = #{accountsReceivableTd,jdbcType=DOUBLE},
+      </if>
+      <if test="prepaymentsTd != null">
+        PREPAYMENTS_TD = #{prepaymentsTd,jdbcType=DOUBLE},
+      </if>
+      <if test="advancePaymentTd != null">
+        ADVANCE_PAYMENT_TD = #{advancePaymentTd,jdbcType=DOUBLE},
+      </if>
+      <if test="creationDate != null">
+        CREATION_DATE = #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateDate != null">
+        LAST_UPDATE_DATE = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteFlag != null">
+        DELETE_FLAG = #{deleteFlag,jdbcType=TINYINT},
+      </if>
+      <if test="version != null">
+        VERSION = #{version,jdbcType=BIGINT},
+      </if>
+    </set>
+    where INDEX_ID = #{indexId,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.jsonyao.mystock.sync.financeindex.entity.SyncFinanceIndex">
+    update sync_finance_index
+    set `YEAR` = #{year,jdbcType=BIGINT},
+      QUARTER = #{quarter,jdbcType=TINYINT},
+      TS_CODE = #{tsCode,jdbcType=VARCHAR},
+      STOCK_NAME = #{stockName,jdbcType=VARCHAR},
+      INDUSTRY = #{industry,jdbcType=VARCHAR},
+      TOTAL_SHARE_CAPITAL = #{totalShareCapital,jdbcType=DOUBLE},
+      DIVIDEND_RATIO = #{dividendRatio,jdbcType=DOUBLE},
+      PH_WEIGHTED_ROE = #{phWeightedRoe,jdbcType=DOUBLE},
+      NET_PROFIT_RATIO = #{netProfitRatio,jdbcType=DOUBLE},
+      GROSS_MARGIN_GM = #{grossMarginGm,jdbcType=DOUBLE},
+      LEVERAGE = #{leverage,jdbcType=DOUBLE},
+      ASSETS_LIA_RATIO = #{assetsLiaRatio,jdbcType=DOUBLE},
+      IB_DEBT_RATIO = #{ibDebtRatio,jdbcType=DOUBLE},
+      CURRENT_RATIO = #{currentRatio,jdbcType=DOUBLE},
+      QUICK_RATIO = #{quickRatio,jdbcType=DOUBLE},
+      SALES_COSTS_RATIO = #{salesCostsRatio,jdbcType=DOUBLE},
+      MAG_COSTS_RATIO = #{magCostsRatio,jdbcType=DOUBLE},
+      FIN_COSTS_RATIO = #{finCostsRatio,jdbcType=DOUBLE},
+      RD_COSTS_RATIO = #{rdCostsRatio,jdbcType=DOUBLE},
+      ASSET_TURNOVER_RATIO = #{assetTurnoverRatio,jdbcType=DOUBLE},
+      INVENTORY_TD = #{inventoryTd,jdbcType=DOUBLE},
+      ACCOUNTS_PAYABLE_TD = #{accountsPayableTd,jdbcType=DOUBLE},
+      ACCOUNTS_RECEIVABLE_TD = #{accountsReceivableTd,jdbcType=DOUBLE},
+      PREPAYMENTS_TD = #{prepaymentsTd,jdbcType=DOUBLE},
+      ADVANCE_PAYMENT_TD = #{advancePaymentTd,jdbcType=DOUBLE},
+      CREATION_DATE = #{creationDate,jdbcType=TIMESTAMP},
+      LAST_UPDATE_DATE = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      DELETE_FLAG = #{deleteFlag,jdbcType=TINYINT},
+      VERSION = #{version,jdbcType=BIGINT}
+    where INDEX_ID = #{indexId,jdbcType=BIGINT}
+  </update>
+</mapper>
